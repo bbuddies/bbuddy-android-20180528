@@ -3,8 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.+'
+        classpath 'com.android.tools.build:gradle:2.3.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -12,11 +11,10 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.odde.bbuddy"
         minSdkVersion 14
@@ -51,7 +49,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
     compile 'com.android.volley:volley:1.0.0'
-    compile 'com.android.support:design:23.2.0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
     compile("org.robobinding:robobinding:0.8.14:with-dependencies") {
         exclude group: 'com.google.guava', module: 'guava'
@@ -69,7 +66,7 @@ dependencies {
 
     provided "org.projectlombok:lombok:1.16.14"
 
-    apt "org.robobinding:codegen:0.8.14"
-    apt "com.google.dagger:dagger-compiler:2.9"
-    apt "org.projectlombok:lombok:1.16.14"
+    annotationProcessor "org.robobinding:codegen:0.8.14"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
+    annotationProcessor "org.projectlombok:lombok:1.16.14"
 }
