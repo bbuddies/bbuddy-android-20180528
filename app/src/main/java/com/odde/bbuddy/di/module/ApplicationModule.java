@@ -8,8 +8,6 @@ import com.odde.bbuddy.account.viewmodel.Account;
 import com.odde.bbuddy.authentication.AuthenticationToken;
 import com.odde.bbuddy.authentication.Authenticator;
 import com.odde.bbuddy.authentication.Credentials;
-import com.odde.bbuddy.budget.model.Budgets;
-import com.odde.bbuddy.budget.viewmodel.Budget;
 import com.odde.bbuddy.common.ApiFactory;
 import com.odde.bbuddy.common.JsonBackend;
 import com.odde.bbuddy.common.JsonMapper;
@@ -51,11 +49,6 @@ public class ApplicationModule {
     @Provides @Singleton
     public AccountsApi provideAccounts(JsonBackend jsonBackend, ApiFactory apiFactory) {
         return new AccountsApi(jsonBackend, new JsonMapper<>(Account.class), apiFactory.create(RawAccountsApi.class));
-    }
-
-    @Provides @Singleton
-    public Budgets provideBudgets(JsonBackend jsonBackend) {
-        return new Budgets(jsonBackend, new JsonMapper<>(Budget.class));
     }
 
 }

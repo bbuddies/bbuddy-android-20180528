@@ -25,7 +25,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".account.view.AddAccountActivity" />
-        <activity android:name=".budget.view.AddBudgetActivity" />
         <activity android:name=".account.view.EditDeleteAccountActivity" />
         <activity android:name=".MainActivity" />
     </application>
