@@ -204,7 +204,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         setMessage(message);
                         showProgress(false);
                     } else
-                        startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
             });
         }

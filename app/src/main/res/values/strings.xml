@@ -20,7 +20,14 @@
     <string name="dashboard">Dashboard</string>
 
     <!-- account related strings -->
+    <string name="account_menu_name">Accounts</string>
     <string name="account_name">Name</string>
     <string name="account_balance_brought_forward">Balance Brought Forward</string>
+
+    <!-- budget related strings -->
+    <string name="budget_menu_name">Budgets</string>
+
+    <!-- dashboard related strings -->
+    <string name="dashboard_menu_name">Dashboard</string>
 
 </resources>
