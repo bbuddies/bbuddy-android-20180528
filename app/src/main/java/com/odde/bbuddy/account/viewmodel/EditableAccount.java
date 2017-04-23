@@ -1,7 +1,7 @@
 package com.odde.bbuddy.account.viewmodel;
 
 import com.odde.bbuddy.account.api.AccountsApi;
-import com.odde.bbuddy.account.view.ShowAllAccountsNavigation;
+import com.odde.bbuddy.account.view.AccountsNavigation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 
 import org.robobinding.annotation.PresentationModel;
@@ -13,16 +13,16 @@ import javax.inject.Inject;
 public class EditableAccount {
 
     private final AccountsApi accountsApi;
-    private final ShowAllAccountsNavigation showAllAccountsNavigation;
+    private final AccountsNavigation accountsNavigation;
 
     private String name;
     private int balanceBroughtForward;
     private int id;
 
     @Inject
-    public EditableAccount(AccountsApi accountsApi, ShowAllAccountsNavigation showAllAccountsNavigation) {
+    public EditableAccount(AccountsApi accountsApi, AccountsNavigation accountsNavigation) {
         this.accountsApi = accountsApi;
-        this.showAllAccountsNavigation = showAllAccountsNavigation;
+        this.accountsNavigation = accountsNavigation;
     }
 
     public String getName() {
@@ -52,7 +52,7 @@ public class EditableAccount {
         accountsApi.addAccount(account, new Runnable() {
             @Override
             public void run() {
-                showAllAccountsNavigation.navigate();
+                accountsNavigation.navigate();
             }
         });
     }
@@ -77,7 +77,7 @@ public class EditableAccount {
         accountsApi.editAccount(account, new Runnable() {
             @Override
             public void run() {
-                showAllAccountsNavigation.navigate();
+                accountsNavigation.navigate();
             }
         });
     }
@@ -88,7 +88,7 @@ public class EditableAccount {
         accountsApi.deleteAccount(account, new Runnable() {
             @Override
             public void run() {
-                showAllAccountsNavigation.navigate();
+                accountsNavigation.navigate();
             }
         });
     }

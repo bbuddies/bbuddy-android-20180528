@@ -14,6 +14,6 @@ public class DashboardActivity extends Fragment {
 
         //Returning the layout file after inflating
         //Change R.layout.tab1 in you classes
-        return inflater.inflate(R.layout.tab_dashboard, container, false);
+        return inflater.inflate(R.layout.activity_dashboard, container, false);
     }
 }

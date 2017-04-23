@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import static com.odde.bbuddy.di.component.ActivityComponentFactory.createActivityComponentBy;
 
 
-public class ShowAllAccountsActivity extends Fragment {
+public class AccountsActivity extends Fragment {
 
     @Inject
     PresentableAccounts presentableAccounts;

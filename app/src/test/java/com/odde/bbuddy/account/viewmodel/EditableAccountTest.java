@@ -2,7 +2,7 @@ package com.odde.bbuddy.account.viewmodel;
 
 import com.nitorcreations.junit.runners.NestedRunner;
 import com.odde.bbuddy.account.api.AccountsApi;
-import com.odde.bbuddy.account.view.ShowAllAccountsNavigation;
+import com.odde.bbuddy.account.view.AccountsNavigation;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +20,8 @@ import static org.mockito.Mockito.verify;
 public class EditableAccountTest {
 
     AccountsApi mockAccountsApi = mock(AccountsApi.class);
-    ShowAllAccountsNavigation mockShowAllAccountsNavigation = mock(ShowAllAccountsNavigation.class);
-    EditableAccount editableAccount = new EditableAccount(mockAccountsApi, mockShowAllAccountsNavigation);
+    AccountsNavigation mockAccountsNavigation = mock(AccountsNavigation.class);
+    EditableAccount editableAccount = new EditableAccount(mockAccountsApi, mockAccountsNavigation);
 
     public class Add {
 
@@ -38,7 +38,7 @@ public class EditableAccountTest {
 
             addAccount("name", 100);
 
-            verify(mockShowAllAccountsNavigation).navigate();
+            verify(mockAccountsNavigation).navigate();
         }
 
         private void given_add_account_will_success() {
@@ -76,7 +76,7 @@ public class EditableAccountTest {
 
             editAccount("name", 100);
 
-            verify(mockShowAllAccountsNavigation).navigate();
+            verify(mockAccountsNavigation).navigate();
         }
 
         private void editAccount(String name, int balanceBroughtForward) {
@@ -114,7 +114,7 @@ public class EditableAccountTest {
 
             editableAccount.delete();
 
-            verify(mockShowAllAccountsNavigation).navigate();
+            verify(mockAccountsNavigation).navigate();
         }
 
         private void verifyAccountsDeleteWithAccount(Account account) {

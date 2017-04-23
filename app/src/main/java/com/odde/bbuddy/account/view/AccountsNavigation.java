@@ -7,12 +7,12 @@ import com.odde.bbuddy.di.scope.ActivityScope;
 import javax.inject.Inject;
 
 @ActivityScope
-public class ShowAllAccountsNavigation {
+public class AccountsNavigation {
 
     private final Activity activity;
 
     @Inject
-    public ShowAllAccountsNavigation(Activity activity) {
+    public AccountsNavigation(Activity activity) {
         this.activity = activity;
     }
 

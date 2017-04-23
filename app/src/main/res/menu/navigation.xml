@@ -4,11 +4,11 @@
     <item
         android:id="@+id/menu_dashboard"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/dashboard_menu_name" />
+        android:title="@string/dashboard_navigation" />
 
     <item
         android:id="@+id/menu_accounts"
         android:icon="@drawable/ic_accounts_24dp"
-        android:title="@string/account_menu_name" />
+        android:title="@string/account_navigation" />
 
 </menu>

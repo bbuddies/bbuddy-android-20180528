@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.odde.bbuddy.account.view.AddAccountActivity;
-import com.odde.bbuddy.account.view.ShowAllAccountsActivity;
+import com.odde.bbuddy.account.view.AccountsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,8 +23,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        setNavigationItemSelectedListener();
+        navigateToFirstTab();
+    }
+
+    private void navigateToFirstTab() {
+        navigationView().getMenu().getItem(0).setChecked(true);
+        setFragment(new DashboardActivity());
+    }
+
+    private void setNavigationItemSelectedListener() {
+        navigationView().setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -33,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                         setFragment(new DashboardActivity());
                         return true;
                     case R.id.menu_accounts:
-                        setFragment(new ShowAllAccountsActivity());
+                        setFragment(new AccountsActivity());
                         setAdd(AddAccountActivity.class);
                         return true;
                 }
@@ -41,9 +50,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-        
-        navigation.getMenu().getItem(0).setChecked(true);
-        setFragment(new DashboardActivity());
+    }
+
+    private BottomNavigationView navigationView() {
+        return (BottomNavigationView) findViewById(R.id.navigation);
     }
 
     private void setAdd(final Class<AddAccountActivity> activityClass) {
@@ -68,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setFragment(Fragment fragment) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.content, fragment);
+        transaction.replace(R.id.main_content, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
