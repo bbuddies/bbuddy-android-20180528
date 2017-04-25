@@ -7,6 +7,7 @@ import com.odde.bbuddy.common.Consumer;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,15 +47,15 @@ public class AccountsApi {
     }
 
     @NonNull
-    private Callback<Account> callbackOfAfterSuccess(final Runnable afterSuccess) {
-        return new Callback<Account>() {
+    private Callback<ResponseBody> callbackOfAfterSuccess(final Runnable afterSuccess) {
+        return new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Account> call, Response<Account> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 afterSuccess.run();
             }
 
             @Override
-            public void onFailure(Call<Account> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
             }
         };

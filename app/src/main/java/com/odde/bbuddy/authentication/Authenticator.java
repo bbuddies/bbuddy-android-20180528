@@ -1,31 +1,32 @@
 package com.odde.bbuddy.authentication;
 
 import com.odde.bbuddy.common.Consumer;
-import com.odde.bbuddy.common.JsonBackend;
-import com.odde.bbuddy.common.JsonMapper;
 
-import org.json.JSONObject;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Authenticator {
 
-    private final JsonBackend backend;
-    private final JsonMapper<Credentials> jsonMapper;
+    private final RawAuthenticationApi rawAuthenticationApi;
 
-    public Authenticator(JsonBackend backend, JsonMapper<Credentials> jsonMapper) {
-        this.backend = backend;
-        this.jsonMapper = jsonMapper;
+    public Authenticator(RawAuthenticationApi rawAuthenticationApi) {
+        this.rawAuthenticationApi = rawAuthenticationApi;
     }
 
     public void authenticate(Credentials credentials, final Consumer afterSuccess) {
-        backend.postRequestForJson("/auth/sign_in", jsonMapper.jsonOf(credentials), new Consumer<JSONObject>() {
+        rawAuthenticationApi.authenticate(credentials).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void accept(JSONObject jsonObject) {
-                afterSuccess.accept("success");
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful())
+                    afterSuccess.accept("success");
+                else
+                    afterSuccess.accept("failed");
             }
-        }, new Runnable() {
+
             @Override
-            public void run() {
-                afterSuccess.accept("failed");
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
             }
         });
     }

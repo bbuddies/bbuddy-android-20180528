@@ -1,15 +1,11 @@
 package com.odde.bbuddy.di.module;
 
-import android.app.Application;
-
 import com.odde.bbuddy.account.api.AccountsApi;
 import com.odde.bbuddy.account.api.RawAccountsApi;
 import com.odde.bbuddy.authentication.AuthenticationToken;
 import com.odde.bbuddy.authentication.Authenticator;
-import com.odde.bbuddy.authentication.Credentials;
+import com.odde.bbuddy.authentication.RawAuthenticationApi;
 import com.odde.bbuddy.common.ApiFactory;
-import com.odde.bbuddy.common.JsonBackend;
-import com.odde.bbuddy.common.JsonMapper;
 
 import javax.inject.Singleton;
 
@@ -18,17 +14,6 @@ import dagger.Provides;
 
 @Module
 public class ApplicationModule {
-
-    private final Application application;
-
-    public ApplicationModule(Application application) {
-        this.application = application;
-    }
-
-    @Provides @Singleton
-    public JsonBackend provideJsonBackend(AuthenticationToken authenticationToken) {
-        return new JsonBackend(application, authenticationToken);
-    }
 
     @Provides @Singleton
     public AuthenticationToken provideAuthenticationToken() {
@@ -41,8 +26,8 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    public Authenticator provideAuthenticator(JsonBackend jsonBackend) {
-        return new Authenticator(jsonBackend, new JsonMapper<>(Credentials.class));
+    public Authenticator provideAuthenticator(ApiFactory apiFactory) {
+        return new Authenticator(apiFactory.create(RawAuthenticationApi.class));
     }
 
     @Provides @Singleton

@@ -1,35 +1,47 @@
 package com.odde.bbuddy.authentication;
 
 import com.odde.bbuddy.common.Consumer;
-import com.odde.bbuddy.common.JsonBackend;
-import com.odde.bbuddy.common.JsonBackendMock;
-import com.odde.bbuddy.common.JsonMapper;
 
 import org.json.JSONException;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class AuthenticatorTest {
 
-    JsonBackend mockBackend = mock(JsonBackend.class);
-    JsonMapper<Credentials> jsonMapper = new JsonMapper<>(Credentials.class);
-    Authenticator authenticator = new Authenticator(mockBackend, jsonMapper);
-    Credentials credentials = credentials("abc@gmail.com", "password");
+    private final Call mockCall = mock(Call.class);
+    RawAuthenticationApi mockRawAuthenticationApi = mock(RawAuthenticationApi.class);
+    Authenticator authenticator = new Authenticator(mockRawAuthenticationApi);
+    Credentials credentials = new Credentials("abc@gmail.com", "password");
     Consumer afterSuccess = mock(Consumer.class);
-    JsonBackendMock<Credentials> jsonBackendMock = new JsonBackendMock<>(mockBackend, Credentials.class);
+
+    @Before
+    public void givenRawApiWillReturnCall() {
+        when(mockRawAuthenticationApi.authenticate(any(Credentials.class))).thenReturn(mockCall);
+    }
 
     @Test
     public void authenticate_with_user_name_and_password() throws JSONException {
-        authenticate(credentials("abc@gmail.com", "password"));
+        authenticate(credentials);
 
-        jsonBackendMock.verifyPostWith("/auth/sign_in", credentials("abc@gmail.com", "password"));
+        verify(mockRawAuthenticationApi).authenticate(credentials);
     }
 
     @Test
     public void authenticate_successful() {
-        jsonBackendMock.givenPostWillSuccess();
+        givenAuthenticateWillSuccess();
 
         authenticate(credentials);
 
@@ -38,19 +50,34 @@ public class AuthenticatorTest {
 
     @Test
     public void authenticate_failed() {
-        jsonBackendMock.givenPostWillFail();
+        givenAuthenticateWillFail();
 
         authenticate(credentials);
 
         verify(afterSuccess).accept("failed");
     }
 
+    private void givenAuthenticateWillSuccess() {
+        callWillResponse(Response.success("success"));
+    }
+
+    private void givenAuthenticateWillFail() {
+        callWillResponse(Response.error(401, mock(ResponseBody.class)));
+    }
+
     private void authenticate(Credentials credentials) {
         authenticator.authenticate(credentials, afterSuccess);
     }
 
-    private Credentials credentials(String email, String password) {
-        return new Credentials(email, password);
+    private void callWillResponse(final Response response) {
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                Callback callback = invocation.getArgument(0);
+                callback.onResponse(mockCall, response);
+                return null;
+            }
+        }).when(mockCall).enqueue(any(Callback.class));
     }
 
 }
