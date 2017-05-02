@@ -1,6 +1,7 @@
 package com.odde.bbuddy.common;
 
-import com.odde.bbuddy.authentication.AuthenticationToken;
+import com.odde.bbuddy.authentication.api.HeaderInterceptor;
+import com.odde.bbuddy.authentication.model.AuthenticationToken;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

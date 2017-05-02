@@ -1,10 +1,12 @@
-package com.odde.bbuddy;
+package com.odde.bbuddy.dashboard.view;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.odde.bbuddy.R;
 
 public class DashboardActivity extends Fragment {
 

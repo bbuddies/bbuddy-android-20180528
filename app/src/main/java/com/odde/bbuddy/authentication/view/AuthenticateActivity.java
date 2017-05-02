@@ -1,9 +1,10 @@
-package com.odde.bbuddy;
+package com.odde.bbuddy.authentication.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.odde.bbuddy.R;
 import com.odde.bbuddy.authentication.viewmodel.EditableAuthentication;
 
 import org.robobinding.ViewBinder;

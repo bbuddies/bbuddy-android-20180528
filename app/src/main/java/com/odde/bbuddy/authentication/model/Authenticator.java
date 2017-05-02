@@ -1,4 +1,6 @@
-package com.odde.bbuddy.authentication;
+package com.odde.bbuddy.authentication.model;
+
+import com.odde.bbuddy.authentication.api.RawAuthenticationApi;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

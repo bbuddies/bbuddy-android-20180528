@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.odde.bbuddy.account.view.AddAccountActivity;
 import com.odde.bbuddy.account.view.AccountsActivity;
+import com.odde.bbuddy.dashboard.view.DashboardActivity;
 
 public class MainActivity extends AppCompatActivity {
 

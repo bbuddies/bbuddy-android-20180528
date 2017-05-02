@@ -2,9 +2,9 @@ package com.odde.bbuddy.di.module;
 
 import com.odde.bbuddy.account.api.AccountsApi;
 import com.odde.bbuddy.account.api.RawAccountsApi;
-import com.odde.bbuddy.authentication.AuthenticationToken;
-import com.odde.bbuddy.authentication.Authenticator;
-import com.odde.bbuddy.authentication.RawAuthenticationApi;
+import com.odde.bbuddy.authentication.model.AuthenticationToken;
+import com.odde.bbuddy.authentication.model.Authenticator;
+import com.odde.bbuddy.authentication.api.RawAuthenticationApi;
 import com.odde.bbuddy.common.ApiFactory;
 
 import javax.inject.Singleton;

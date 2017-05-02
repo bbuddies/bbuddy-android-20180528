@@ -1,7 +1,7 @@
 package com.odde.bbuddy.authentication.viewmodel;
 
-import com.odde.bbuddy.authentication.Authenticator;
-import com.odde.bbuddy.authentication.Credentials;
+import com.odde.bbuddy.authentication.model.Authenticator;
+import com.odde.bbuddy.authentication.model.Credentials;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 

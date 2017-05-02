@@ -1,4 +1,6 @@
-package com.odde.bbuddy.authentication;
+package com.odde.bbuddy.authentication.model;
+
+import com.odde.bbuddy.authentication.model.AuthenticationToken;
 
 import org.junit.Test;
 

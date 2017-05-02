@@ -1,4 +1,4 @@
-package com.odde.bbuddy.authentication;
+package com.odde.bbuddy.authentication.model;
 
 import java.util.HashMap;
 import java.util.Map;

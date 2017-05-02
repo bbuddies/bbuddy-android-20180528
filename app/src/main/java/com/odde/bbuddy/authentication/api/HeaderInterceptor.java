@@ -1,6 +1,6 @@
-package com.odde.bbuddy.common;
+package com.odde.bbuddy.authentication.api;
 
-import com.odde.bbuddy.authentication.AuthenticationToken;
+import com.odde.bbuddy.authentication.model.AuthenticationToken;
 
 import java.io.IOException;
 import java.util.HashMap;
