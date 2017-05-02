@@ -1,7 +1,5 @@
 package com.odde.bbuddy.authentication;
 
-import com.odde.bbuddy.common.Consumer;
-
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +23,8 @@ public class AuthenticatorTest {
     RawAuthenticationApi mockRawAuthenticationApi = mock(RawAuthenticationApi.class);
     Authenticator authenticator = new Authenticator(mockRawAuthenticationApi);
     Credentials credentials = new Credentials("abc@gmail.com", "password");
-    Consumer afterSuccess = mock(Consumer.class);
+    Runnable afterSuccess = mock(Runnable.class);
+    Runnable afterFailed = mock(Runnable.class);
 
     @Before
     public void givenRawApiWillReturnCall() {
@@ -45,7 +44,7 @@ public class AuthenticatorTest {
 
         authenticate(credentials);
 
-        verify(afterSuccess).accept("success");
+        verify(afterSuccess).run();
     }
 
     @Test
@@ -54,7 +53,7 @@ public class AuthenticatorTest {
 
         authenticate(credentials);
 
-        verify(afterSuccess).accept("failed");
+        verify(afterFailed).run();
     }
 
     private void givenAuthenticateWillSuccess() {
@@ -66,7 +65,7 @@ public class AuthenticatorTest {
     }
 
     private void authenticate(Credentials credentials) {
-        authenticator.authenticate(credentials, afterSuccess);
+        authenticator.authenticate(credentials, afterSuccess, afterFailed);
     }
 
     private void callWillResponse(final Response response) {

@@ -1,7 +1,5 @@
 package com.odde.bbuddy.authentication;
 
-import com.odde.bbuddy.common.Consumer;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,14 +13,14 @@ public class Authenticator {
         this.rawAuthenticationApi = rawAuthenticationApi;
     }
 
-    public void authenticate(Credentials credentials, final Consumer afterSuccess) {
+    public void authenticate(Credentials credentials, final Runnable afterSuccess, final Runnable afterFailed) {
         rawAuthenticationApi.authenticate(credentials).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful())
-                    afterSuccess.accept("success");
+                    afterSuccess.run();
                 else
-                    afterSuccess.accept("failed");
+                    afterFailed.run();
             }
 
             @Override
