@@ -2,7 +2,6 @@ package com.odde.bbuddy.authentication.model;
 
 import com.odde.bbuddy.authentication.api.RawAuthenticationApi;
 
-import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -34,7 +33,7 @@ public class AuthenticatorTest {
     }
 
     @Test
-    public void authenticate_with_user_name_and_password() throws JSONException {
+    public void authenticate_with_user_name_and_password() {
         authenticate(credentials);
 
         verify(mockRawAuthenticationApi).authenticate(credentials);

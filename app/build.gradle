@@ -48,30 +48,51 @@ android {
     }
 }
 
+ext {
+    libVersions = [
+            android    : '25.1.1',
+            robobinding: '0.8.14',
+            dagger     : '2.9',
+            retrofit   : '2.2.0',
+    ]
+    testLibVersions = [
+            junit       : '4.12',
+            mockito     : '2.6.4',
+            nestedrunner: '1.3',
+            assertj     : '3.6.2',
+    ]
+    providedLibVersions = [
+            lombok: '1.16.14',
+    ]
+}
+
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile("org.robobinding:robobinding:0.8.14:with-dependencies") {
+    compile(
+            [group: 'com.android.support', name: 'appcompat-v7', version: libVersions.android],
+            [group: 'com.android.support', name: 'design', version: libVersions.android],
+            [group: 'com.android.support', name: 'support-vector-drawable', version: libVersions.android],
+            [group: 'com.google.dagger', name: 'dagger', version: libVersions.dagger],
+            [group: 'com.squareup.retrofit2', name: 'retrofit', version: libVersions.retrofit],
+            [group: 'com.squareup.retrofit2', name: 'converter-jackson', version: libVersions.retrofit],
+    )
+    compile(group: 'org.robobinding', name: 'robobinding', version: libVersions.robobinding, classifier: 'with-dependencies') {
         exclude group: 'com.google.guava', module: 'guava'
     }
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:design:25.1.1'
-    compile 'com.android.support:support-vector-drawable:25.1.1'
-    compile 'com.android.volley:volley:1.0.0'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
-    compile 'com.google.dagger:dagger:2.9'
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-jackson:2.2.0'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.6.4'
-    testCompile 'org.json:json:20140107'
-    testCompile 'com.nitorcreations:junit-runners:1.3'
-    testCompile 'org.skyscreamer:jsonassert:1.4.0'
-    testCompile 'org.assertj:assertj-core:3.6.2'
+    testCompile(
+            [group: 'junit', name: 'junit', version: testLibVersions.junit],
+            [group: 'org.mockito', name: 'mockito-core', version: testLibVersions.mockito],
+            [group: 'com.nitorcreations', name: 'junit-runners', version: testLibVersions.nestedrunner],
+            [group: 'org.assertj', name: 'assertj-core', version: testLibVersions.assertj],
+    )
 
-    annotationProcessor 'org.robobinding:codegen:0.8.14'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
-    annotationProcessor 'org.projectlombok:lombok:1.16.14'
+    annotationProcessor(
+            [group: 'org.robobinding', name: 'codegen', version: libVersions.robobinding],
+            [group: 'com.google.dagger', name: 'dagger-compiler', version: libVersions.dagger],
+            [group: 'org.projectlombok', name: 'lombok', version: providedLibVersions.lombok],
+    )
 
-    provided 'org.projectlombok:lombok:1.16.14'
+    provided(
+            [group: 'org.projectlombok', name: 'lombok', version: providedLibVersions.lombok],
+    )
 }
