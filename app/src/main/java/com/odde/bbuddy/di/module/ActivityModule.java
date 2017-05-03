@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.odde.bbuddy.account.viewmodel.PresentableAccounts;
+import com.odde.bbuddy.authentication.model.Authenticator;
+import com.odde.bbuddy.authentication.viewmodel.AutologinAuthentication;
 import com.odde.bbuddy.authentication.viewmodel.EditableAuthentication;
+import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 
 import org.robobinding.ViewBinder;
@@ -13,8 +16,11 @@ import org.robobinding.presentationmodel.PresentationModelChangeSupport;
 
 import javax.inject.Named;
 
+import dagger.Lazy;
 import dagger.Module;
 import dagger.Provides;
+
+import static com.odde.bbuddy.BuildConfig.AUTO_LOGIN;
 
 @Module
 public class ActivityModule {
@@ -48,6 +54,14 @@ public class ActivityModule {
     @Provides @ActivityScope @Named("editableAuthentication")
     PresentationModelChangeSupport providePresentationModelChangeSupportForEditableAuthentication(EditableAuthentication editableAuthentication) {
         return new PresentationModelChangeSupport(editableAuthentication);
+    }
+
+    @Provides @ActivityScope
+    EditableAuthentication provideEditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader) {
+        if (AUTO_LOGIN)
+            return new AutologinAuthentication(authenticator, dashboardNavigation, changeSupportLoader);
+        else
+            return new EditableAuthentication(authenticator, dashboardNavigation, changeSupportLoader);
     }
 
 }
