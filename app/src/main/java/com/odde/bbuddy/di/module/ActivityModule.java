@@ -7,6 +7,7 @@ import com.odde.bbuddy.account.viewmodel.PresentableAccounts;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.viewmodel.AutologinAuthentication;
 import com.odde.bbuddy.authentication.viewmodel.EditableAuthentication;
+import com.odde.bbuddy.common.StringResources;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 
@@ -57,11 +58,11 @@ public class ActivityModule {
     }
 
     @Provides @ActivityScope
-    EditableAuthentication provideEditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader) {
+    EditableAuthentication provideEditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources) {
         if (AUTO_LOGIN)
-            return new AutologinAuthentication(authenticator, dashboardNavigation, changeSupportLoader);
+            return new AutologinAuthentication(authenticator, dashboardNavigation, changeSupportLoader, stringResources);
         else
-            return new EditableAuthentication(authenticator, dashboardNavigation, changeSupportLoader);
+            return new EditableAuthentication(authenticator, dashboardNavigation, changeSupportLoader, stringResources);
     }
 
 }

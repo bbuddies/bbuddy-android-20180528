@@ -18,7 +18,7 @@ public class BbuddyApplication extends Application {
 
     private void initApplicationComponent() {
         applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule())
+                .applicationModule(new ApplicationModule(this))
                 .build();
     }
 

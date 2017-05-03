@@ -1,7 +1,9 @@
 package com.odde.bbuddy.authentication.viewmodel;
 
+import com.odde.bbuddy.R;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.model.Credentials;
+import com.odde.bbuddy.common.StringResources;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 
@@ -21,13 +23,15 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
     private final Authenticator authenticator;
     private final DashboardNavigation dashboardNavigation;
     private final Lazy<PresentationModelChangeSupport> changeSupportLoader;
+    private final StringResources stringResources;
     private String message;
 
     @Inject
-    public EditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader) {
+    public EditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources) {
         this.authenticator = authenticator;
         this.dashboardNavigation = dashboardNavigation;
         this.changeSupportLoader = changeSupportLoader;
+        this.stringResources = stringResources;
     }
 
     private String email;
@@ -58,7 +62,7 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
         }, new Runnable() {
             @Override
             public void run() {
-                message = "Login failed";
+                message = stringResources.get(R.string.login_failed);
                 getPresentationModelChangeSupport().refreshPresentationModel();
             }
         });

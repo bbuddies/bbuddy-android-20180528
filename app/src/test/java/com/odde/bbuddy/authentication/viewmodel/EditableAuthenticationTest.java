@@ -2,6 +2,7 @@ package com.odde.bbuddy.authentication.viewmodel;
 
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.model.Credentials;
+import com.odde.bbuddy.common.StringResources;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 
 import org.junit.Before;
@@ -14,6 +15,7 @@ import dagger.Lazy;
 import static com.odde.bbuddy.common.CallbackInvoker.callRunnableAtIndex;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,13 +24,14 @@ public class EditableAuthenticationTest {
 
     Authenticator mockAuthenticator = mock(Authenticator.class);
     DashboardNavigation mockDashboardNavigation = mock(DashboardNavigation.class);
-    Lazy<PresentationModelChangeSupport> mockChangeSupportLoader = mock(Lazy.class);
+    Lazy<PresentationModelChangeSupport> stubChangeSupportLoader = mock(Lazy.class);
     PresentationModelChangeSupport mockPresentationModelChangeSupport = mock(PresentationModelChangeSupport.class);
-    EditableAuthentication editableAuthentication = new EditableAuthentication(mockAuthenticator, mockDashboardNavigation, mockChangeSupportLoader);
+    StringResources stubStringResources = mock(StringResources.class);
+    EditableAuthentication editableAuthentication = new EditableAuthentication(mockAuthenticator, mockDashboardNavigation, stubChangeSupportLoader, stubStringResources);
 
     @Before
     public void enableChangeSupport() {
-        when(mockChangeSupportLoader.get()).thenReturn(mockPresentationModelChangeSupport);
+        when(stubChangeSupportLoader.get()).thenReturn(mockPresentationModelChangeSupport);
     }
 
     @Test
@@ -50,11 +53,16 @@ public class EditableAuthenticationTest {
     @Test
     public void should_show_some_message_after_login_failed() {
         givenAuthenticateWillFailed();
+        givenLoginFailedMessage("a login failed message");
 
         login("email", "wrong_password");
 
-        assertThat(editableAuthentication.getMessage()).isEqualTo("Login failed");
+        assertThat(editableAuthentication.getMessage()).isEqualTo("a login failed message");
         verify(mockPresentationModelChangeSupport).refreshPresentationModel();
+    }
+
+    private void givenLoginFailedMessage(String message) {
+        when(stubStringResources.get(anyInt())).thenReturn(message);
     }
 
     private void verifyAuthenticateCalledWith(String email, String password) {
