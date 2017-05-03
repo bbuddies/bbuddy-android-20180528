@@ -1,0 +1,30 @@
+dependencies {
+    compile(
+            [group: 'com.android.support', name: 'appcompat-v7', version: libVersions.android],
+            [group: 'com.android.support', name: 'design', version: libVersions.android],
+            [group: 'com.android.support', name: 'support-vector-drawable', version: libVersions.android],
+            [group: 'com.google.dagger', name: 'dagger', version: libVersions.dagger],
+            [group: 'com.squareup.retrofit2', name: 'retrofit', version: libVersions.retrofit],
+            [group: 'com.squareup.retrofit2', name: 'converter-jackson', version: libVersions.retrofit],
+    )
+    compile(group: 'org.robobinding', name: 'robobinding', version: libVersions.robobinding, classifier: 'with-dependencies') {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+
+    testCompile(
+            [group: 'junit', name: 'junit', version: testLibVersions.junit],
+            [group: 'org.mockito', name: 'mockito-core', version: testLibVersions.mockito],
+            [group: 'com.nitorcreations', name: 'junit-runners', version: testLibVersions.nestedrunner],
+            [group: 'org.assertj', name: 'assertj-core', version: testLibVersions.assertj],
+    )
+
+    annotationProcessor(
+            [group: 'org.robobinding', name: 'codegen', version: libVersions.robobinding],
+            [group: 'com.google.dagger', name: 'dagger-compiler', version: libVersions.dagger],
+            [group: 'org.projectlombok', name: 'lombok', version: providedLibVersions.lombok],
+    )
+
+    provided(
+            [group: 'org.projectlombok', name: 'lombok', version: providedLibVersions.lombok],
+    )
+}

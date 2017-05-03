@@ -1,0 +1,38 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.odde.bbuddy"
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "SERVER_URL", '"http://to-be-decided-later.com"'
+            buildConfigField "boolean", "AUTO_LOGIN", "false"
+        }
+        development {
+            initWith(buildTypes.debug)
+            buildConfigField "String", "SERVER_URL", '"http://10.0.3.2:3000"'
+            buildConfigField "boolean", "AUTO_LOGIN", "true"
+        }
+        debug {
+            buildConfigField "String", "SERVER_URL", '"http://10.0.3.2:4000"'
+            buildConfigField "boolean", "AUTO_LOGIN", "false"
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
