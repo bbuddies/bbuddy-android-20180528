@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="InvalidPackage">
+        <ignore regexp=".*jackson-databind.*" />
+        <ignore regexp=".*retrofit.*" />
+    </issue>
+    <issue id="MissingPrefix">
+        <ignore regexp=".*bind.*" />
+    </issue>
+    <issue id="RelativeOverlap">
+        <ignore regexp=".*action_bar.*" />
+    </issue>
+</lint>

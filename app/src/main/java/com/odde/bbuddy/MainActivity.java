@@ -8,13 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.odde.bbuddy.account.view.AddAccountActivity;
 import com.odde.bbuddy.account.view.AccountsActivity;
+import com.odde.bbuddy.account.view.AddAccountActivity;
 import com.odde.bbuddy.dashboard.view.DashboardActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -61,9 +60,8 @@ public class MainActivity extends AppCompatActivity {
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
-        LayoutInflater mInflater = LayoutInflater.from(this);
 
-        View mCustomView = mInflater.inflate(R.layout.action_bar, null);
+        View mCustomView = View.inflate(this, R.layout.action_bar, null);
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
 

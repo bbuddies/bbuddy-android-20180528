@@ -32,7 +32,9 @@ android {
         exclude 'META-INF/LICENSE'
     }
     lintOptions {
-        abortOnError false
+        abortOnError true
+        disable 'OnClick', 'IconDensities', 'GoogleAppIndexingWarning'
+        lintConfig rootProject.file('app/gradle/lint.xml')
     }
 }
 
