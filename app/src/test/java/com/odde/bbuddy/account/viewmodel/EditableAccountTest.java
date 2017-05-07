@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
+import static com.odde.bbuddy.account.builder.AccountBuilder.emptyAccount;
 import static com.odde.bbuddy.common.CallbackInvoker.callRunnableAtIndex;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -29,7 +30,7 @@ public class EditableAccountTest {
         public void add_should_correctly_add_account() {
             addAccount("name", 100);
 
-            verifyAccountsAddWithAccount(account("name", 100));
+            verifyAccountsAddWithAccount(emptyAccount().name("name").balanceBroughtForward(100).build());
         }
 
         @Test
@@ -66,7 +67,7 @@ public class EditableAccountTest {
 
             editAccount("name", 100);
 
-            verifyAccountsEditWithAccount(account(1, "name", 100));
+            verifyAccountsEditWithAccount(emptyAccount().id(1).name("name").balanceBroughtForward(100).build());
         }
 
         @Test
@@ -104,7 +105,7 @@ public class EditableAccountTest {
 
             editableAccount.delete();
 
-            verifyAccountsDeleteWithAccount(account(1));
+            verifyAccountsDeleteWithAccount(emptyAccount().id(1).build());
         }
 
         @Test
@@ -160,21 +161,4 @@ public class EditableAccountTest {
         editableAccount.setId(id);
     }
 
-    private Account account(String name, int balanceBroughtForward) {
-        return account(0, name, balanceBroughtForward);
-    }
-
-    private Account account(int id) {
-        Account account = new Account();
-        account.setId(id);
-        return account;
-    }
-
-    private Account account(int id, String name, int balanceBroughtForward) {
-        Account account = new Account();
-        account.setId(id);
-        account.setName(name);
-        account.setBalanceBroughtForward(balanceBroughtForward);
-        return account;
-    }
 }

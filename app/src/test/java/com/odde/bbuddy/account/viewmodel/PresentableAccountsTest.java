@@ -11,10 +11,9 @@ import org.junit.Test;
 import org.robobinding.presentationmodel.PresentationModelChangeSupport;
 import org.robobinding.widget.adapterview.ItemClickEvent;
 
-import java.util.List;
-
 import dagger.Lazy;
 
+import static com.odde.bbuddy.account.builder.AccountBuilder.anAccount;
 import static com.odde.bbuddy.common.CallbackInvoker.callConsumerArgumentAtIndexWith;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -29,7 +28,7 @@ public class PresentableAccountsTest {
     EditDeleteAccountNavigation mockEditDeleteAccountNavigation = mock(EditDeleteAccountNavigation.class);
     Lazy<PresentationModelChangeSupport> mockChangeSupportLazyLoader = mock(Lazy.class);
     PresentationModelChangeSupport mockPresentationModelChangeSupport = mock(PresentationModelChangeSupport.class);
-    private final Account account = new Account() {{ setId(1); setName("name"); setBalanceBroughtForward(100); }};
+    private final Account account = anAccount().build();
     private PresentableAccounts presentableAccounts = createPresentableAccounts();
 
     @Before
@@ -39,14 +38,14 @@ public class PresentableAccountsTest {
 
     @Test
     public void get_all_accounts() {
-        given_accounts_will_return(asList(account));
+        given_accounts_will_return(account);
 
         assertThat(createPresentableAccounts().getAccounts()).isEqualTo(asList(account));
     }
 
     @Test
     public void refresh() {
-        given_accounts_will_return(asList(account));
+        given_accounts_will_return(account);
 
         presentableAccounts.refresh();
 
@@ -56,7 +55,7 @@ public class PresentableAccountsTest {
     
     @Test
     public void update_account_should_navigate_to_edit_delete_view() {
-        given_accounts_will_return(asList(account));
+        given_accounts_will_return(account);
 
         createPresentableAccounts().updateAccount(stubItemClickEventAtPosition(0));
 
@@ -70,8 +69,8 @@ public class PresentableAccountsTest {
         return stubItemContext;
     }
 
-    private void given_accounts_will_return(final List<Account> allAccounts) {
-        callConsumerArgumentAtIndexWith(0, allAccounts).when(mockAccountsApi).processAllAccounts(any(Consumer.class));
+    private void given_accounts_will_return(Account account) {
+        callConsumerArgumentAtIndexWith(0, asList(account)).when(mockAccountsApi).processAllAccounts(any(Consumer.class));
     }
 
     private PresentableAccounts createPresentableAccounts() {
