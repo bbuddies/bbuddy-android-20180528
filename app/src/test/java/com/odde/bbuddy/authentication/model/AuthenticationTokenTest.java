@@ -1,18 +1,20 @@
 package com.odde.bbuddy.authentication.model;
 
-import com.odde.bbuddy.authentication.model.AuthenticationToken;
+import com.odde.bbuddy.common.BiConsumer;
+import com.odde.bbuddy.common.Function;
 
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class AuthenticationTokenTest {
 
     AuthenticationToken token = new AuthenticationToken();
-    Map<String, String> headers = new HashMap<String, String>() {{
+    Map<String, String> authenticationTokens = new HashMap<String, String>() {{
         put("access-token", "access-token");
         put("token-type", "token-type");
         put("uid", "uid");
@@ -23,22 +25,39 @@ public class AuthenticationTokenTest {
 
     @Test
     public void update_token_and_get_headers() {
-        token.updateByHeaders(headers);
+        updateByHeaders(authenticationTokens);
 
-        assertThat(token.getHeaders()).isEqualTo(headers);
+        verifyCanProcessHeaders(authenticationTokens);
     }
 
     @Test
     public void will_not_update_token_when_authentication_token_headers_not_exist() {
-        given_token_already_updated_with_headers();
+        given_token_already_updated_with_headers(authenticationTokens);
 
-        token.updateByHeaders(headersWithoutAuthenticationToken);
+        updateByHeaders(headersWithoutAuthenticationToken);
 
-        assertThat(token.getHeaders()).isEqualTo(headers);
+        verifyCanProcessHeaders(authenticationTokens);
     }
 
-    private void given_token_already_updated_with_headers() {
-        token.updateByHeaders(headers);
+    private void given_token_already_updated_with_headers(Map<String, String> headersWithAuthenticationTokens) {
+        updateByHeaders(headersWithAuthenticationTokens);
+    }
+
+    private void verifyCanProcessHeaders(Map<String, String> headersWithAuthenticationTokens) {
+        BiConsumer mockBiConsumer = mock(BiConsumer.class);
+        token.processEachHeader(mockBiConsumer);
+
+        for (Map.Entry<String, String> header : headersWithAuthenticationTokens.entrySet())
+            verify(mockBiConsumer).accept(header.getKey(), header.getValue());
+    }
+
+    private void updateByHeaders(final Map<String, String> headers) {
+        token.updateEachHeader(new Function<String, String>() {
+            @Override
+            public String apply(String key) {
+                return headers.get(key);
+            }
+        });
     }
 
 }

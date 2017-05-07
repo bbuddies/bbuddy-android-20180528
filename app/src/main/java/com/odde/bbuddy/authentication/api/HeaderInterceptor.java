@@ -1,10 +1,12 @@
 package com.odde.bbuddy.authentication.api;
 
+import android.support.annotation.NonNull;
+
 import com.odde.bbuddy.authentication.model.AuthenticationToken;
+import com.odde.bbuddy.common.BiConsumer;
+import com.odde.bbuddy.common.Function;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -20,22 +22,38 @@ public class HeaderInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Request original = chain.request();
+        return updateAuthenticationHeadersThenResponse(chain, requestWithAuthenticationHeaders(chain.request()));
+    }
 
-        Request.Builder requestBuilder = original.newBuilder();
-        for (String header: authenticationToken.getHeaders().keySet()) {
-            requestBuilder.header(header, authenticationToken.getHeaders().get(header));
-        }
-        Request request = requestBuilder
-                .method(original.method(), original.body())
-                .build();
+    private Response updateAuthenticationHeadersThenResponse(Chain chain, Request request) throws IOException {
+        final Response response = chain.proceed(request);
 
-        Response response = chain.proceed(request);
-        Map<String, String> authenticationHeaders = new HashMap<>();
-        for (String name: response.headers().names()) {
-            authenticationHeaders.put(name, response.headers().get(name));
-        }
-        authenticationToken.updateByHeaders(authenticationHeaders);
+        authenticationToken.updateEachHeader(new Function<String, String>() {
+            @Override
+            public String apply(String header) {
+                return response.header(header);
+            }
+        });
+
         return response;
+    }
+
+    private Request requestWithAuthenticationHeaders(Request originalRequest) {
+        return addAuthenticationHeaders(originalRequest)
+                .method(originalRequest.method(), originalRequest.body())
+                .build();
+    }
+
+    @NonNull
+    private Request.Builder addAuthenticationHeaders(Request original) {
+        final Request.Builder requestBuilder = original.newBuilder();
+
+        authenticationToken.processEachHeader(new BiConsumer<String, String>() {
+            @Override
+            public void accept(String header, String value) {
+                requestBuilder.header(header, value);
+            }
+        });
+        return requestBuilder;
     }
 }
