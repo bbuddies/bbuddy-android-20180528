@@ -1,17 +1,25 @@
 package com.odde.bbuddy.common;
 
-import com.odde.bbuddy.authentication.viewmodel.EditableAuthentication;
+import android.support.annotation.NonNull;
 
-import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
 
 public class Validator {
 
-    @Inject
-    public Validator() { }
+    private final javax.validation.Validator rawValidator;
+
+    public Validator(javax.validation.Validator rawValidator) {
+        this.rawValidator = rawValidator;
+    }
 
     public void processEachViolation(Object object, Consumer<String> consumer) {
-        if (((EditableAuthentication)object).getEmail().isEmpty())
-            consumer.accept("email may not be blank");
+        for (ConstraintViolation violation : rawValidator.validate(object))
+            consumer.accept(errorMessage(violation));
+    }
+
+    @NonNull
+    private String errorMessage(ConstraintViolation violation) {
+        return violation.getPropertyPath().iterator().next().getName() + " " + violation.getMessage();
     }
 
 }

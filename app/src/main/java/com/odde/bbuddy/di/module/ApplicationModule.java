@@ -9,8 +9,10 @@ import com.odde.bbuddy.authentication.model.AuthenticationToken;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.common.ApiFactory;
 import com.odde.bbuddy.common.StringResources;
+import com.odde.bbuddy.common.Validator;
 
 import javax.inject.Singleton;
+import javax.validation.Validation;
 
 import dagger.Module;
 import dagger.Provides;
@@ -24,29 +26,44 @@ public class ApplicationModule {
         this.application = application;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     public AuthenticationToken provideAuthenticationToken() {
         return new AuthenticationToken();
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     public ApiFactory provideApiFactory(AuthenticationToken authenticationToken) {
         return new ApiFactory(authenticationToken);
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     public Authenticator provideAuthenticator(ApiFactory apiFactory) {
         return new Authenticator(apiFactory.create(RawAuthenticationApi.class));
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     public AccountsApi provideAccounts(ApiFactory apiFactory) {
         return new AccountsApi(apiFactory.create(RawAccountsApi.class));
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     public StringResources provideResources() {
         return new StringResources(application.getResources());
+    }
+
+    @Provides
+    @Singleton
+    public Validator provideValidator() {
+        return new Validator(Validation
+                .byDefaultProvider()
+                .configure()
+                .ignoreXmlConfiguration()
+                .buildValidatorFactory().getValidator());
     }
 
 }

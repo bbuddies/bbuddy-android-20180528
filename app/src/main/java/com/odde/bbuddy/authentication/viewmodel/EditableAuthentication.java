@@ -10,6 +10,7 @@ import com.odde.bbuddy.common.ValueCaptor;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.robobinding.annotation.PresentationModel;
 import org.robobinding.presentationmodel.HasPresentationModelChangeSupport;
 import org.robobinding.presentationmodel.PresentationModelChangeSupport;
@@ -39,6 +40,7 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
         this.validator = validator;
     }
 
+    @NotBlank
     private String email;
     private String password;
 
