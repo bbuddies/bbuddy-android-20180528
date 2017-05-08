@@ -1,9 +1,11 @@
 ext {
     libVersions = [
-            android    : '25.1.1',
-            robobinding: '0.8.14',
-            dagger     : '2.9',
-            retrofit   : '2.2.0',
+            android           : '25.1.1',
+            robobinding       : '0.8.14',
+            dagger            : '2.9',
+            retrofit          : '2.2.0',
+            hibernateValidator: '5.4.1.Final',
+            javaxEl           : '2.2.4',
     ]
     testLibVersions = [
             junit       : '4.12',
