@@ -1,7 +1,5 @@
 package com.odde.bbuddy.common;
 
-import android.support.annotation.NonNull;
-
 import javax.validation.ConstraintViolation;
 
 public class Validator {
@@ -17,7 +15,6 @@ public class Validator {
             consumer.accept(errorMessage(violation));
     }
 
-    @NonNull
     private String errorMessage(ConstraintViolation violation) {
         return violation.getPropertyPath().iterator().next().getName() + " " + violation.getMessage();
     }

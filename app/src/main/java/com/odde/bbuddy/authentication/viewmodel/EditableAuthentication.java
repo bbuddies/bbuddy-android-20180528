@@ -61,18 +61,11 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
     }
 
     public void login() {
-        final ValueCaptor<Boolean> isValid = new ValueCaptor(true);
-        validator.processEachViolation(this, new Consumer<String>() {
-            @Override
-            public void accept(String violationMessage) {
-                message = violationMessage;
-                getPresentationModelChangeSupport().refreshPresentationModel();
-                isValid.capture(false);
-            }
-        });
-        if (!isValid.value())
-            return;
+        if (isValid())
+            authenticate();
+    }
 
+    private void authenticate() {
         authenticator.authenticate(new Credentials(email, password), new Runnable() {
             @Override
             public void run() {
@@ -85,6 +78,19 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
                 getPresentationModelChangeSupport().refreshPresentationModel();
             }
         });
+    }
+
+    private boolean isValid() {
+        final ValueCaptor<Boolean> isValid = new ValueCaptor(true);
+        validator.processEachViolation(this, new Consumer<String>() {
+            @Override
+            public void accept(String violationMessage) {
+                message = violationMessage;
+                getPresentationModelChangeSupport().refreshPresentationModel();
+                isValid.capture(false);
+            }
+        });
+        return isValid.value();
     }
 
     public String getMessage() {
