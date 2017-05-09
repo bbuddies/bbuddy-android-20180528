@@ -23,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -113,12 +114,21 @@ public class EditableAuthenticationTest {
             verifyAuthenticationNotCalled();
         }
 
+        @Test
+        public void should_only_refresh_once_if_there_are_two_errors() {
+            givenCredentialViolatedWithMessage("email may not be blank", "password may not be blank");
+
+            login("", "");
+
+            verify(mockPresentationModelChangeSupport, times(1)).refreshPresentationModel();
+        }
+
         private void verifyAuthenticationNotCalled() {
             verify(mockAuthenticator, never()).authenticate(any(Credentials.class), any(Runnable.class), any(Runnable.class));
         }
 
-        private void givenCredentialViolatedWithMessage(final String message) {
-            callConsumerArgumentAtIndexWith(1, message).when(stubValidator).processEachViolation(any(EditableAuthentication.class), any(Consumer.class));
+        private void givenCredentialViolatedWithMessage(final String... messages) {
+            callConsumerArgumentAtIndexWith(1, messages).when(stubValidator).processEachViolation(any(EditableAuthentication.class), any(Consumer.class));
         }
 
     }

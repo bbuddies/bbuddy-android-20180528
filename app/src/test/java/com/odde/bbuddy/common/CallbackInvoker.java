@@ -8,12 +8,13 @@ import static org.mockito.Mockito.doAnswer;
 
 public class CallbackInvoker {
 
-    public static Stubber callConsumerArgumentAtIndexWith(final int index, final Object data) {
+    public static Stubber callConsumerArgumentAtIndexWith(final int index, final Object... objects) {
         return doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
                 Consumer consumer = invocation.getArgument(index);
-                consumer.accept(data);
+                for (Object object : objects)
+                    consumer.accept(object);
                 return null;
             }
         });

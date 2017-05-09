@@ -86,10 +86,11 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
             @Override
             public void accept(String violationMessage) {
                 message = violationMessage;
-                getPresentationModelChangeSupport().refreshPresentationModel();
                 isValid.capture(false);
             }
         });
+        if (!isValid.value())
+            getPresentationModelChangeSupport().refreshPresentationModel();
         return isValid.value();
     }
 
