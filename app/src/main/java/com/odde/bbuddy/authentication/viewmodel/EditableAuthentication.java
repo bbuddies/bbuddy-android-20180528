@@ -1,5 +1,7 @@
 package com.odde.bbuddy.authentication.viewmodel;
 
+import android.text.TextUtils;
+
 import com.odde.bbuddy.R;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.model.Credentials;
@@ -14,6 +16,11 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.robobinding.annotation.PresentationModel;
 import org.robobinding.presentationmodel.HasPresentationModelChangeSupport;
 import org.robobinding.presentationmodel.PresentationModelChangeSupport;
+import org.robobinding.util.Joiner;
+
+import java.util.ArrayList;
+import java.util.StringJoiner;
+import java.util.StringTokenizer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -81,17 +88,18 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
     }
 
     private boolean isValid() {
-        final ValueCaptor<Boolean> isValid = new ValueCaptor(true);
+        final ArrayList<String> violationMessages = new ArrayList<>();
         validator.processEachViolation(this, new Consumer<String>() {
             @Override
             public void accept(String violationMessage) {
-                message = violationMessage;
-                isValid.capture(false);
+                violationMessages.add(violationMessage);
             }
         });
-        if (!isValid.value())
+        if (!violationMessages.isEmpty()) {
+            message = Joiner.on(System.getProperty("line.separator")).join(violationMessages);
             getPresentationModelChangeSupport().refreshPresentationModel();
-        return isValid.value();
+        }
+        return violationMessages.isEmpty();
     }
 
     public String getMessage() {

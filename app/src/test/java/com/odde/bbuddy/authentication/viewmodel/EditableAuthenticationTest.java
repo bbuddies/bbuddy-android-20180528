@@ -116,11 +116,20 @@ public class EditableAuthenticationTest {
 
         @Test
         public void should_only_refresh_once_if_there_are_two_errors() {
-            givenCredentialViolatedWithMessage("email may not be blank", "password may not be blank");
+            givenCredentialViolatedWithMessage("first error message", "second error message");
 
             login("", "");
 
             verify(mockPresentationModelChangeSupport, times(1)).refreshPresentationModel();
+        }
+
+        @Test
+        public void should_show_both_error_messages_if_email_and_password_are_both_empty() {
+            givenCredentialViolatedWithMessage("first error message", "second error message");
+
+            login("", "");
+
+            assertThat(editableAuthentication.getMessage()).contains("first error message", "second error message");
         }
 
         private void verifyAuthenticationNotCalled() {
