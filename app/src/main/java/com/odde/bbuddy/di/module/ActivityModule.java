@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.odde.bbuddy.account.viewmodel.PresentableAccounts;
 import com.odde.bbuddy.authentication.model.Authenticator;
+import com.odde.bbuddy.authentication.view.AddAccountView;
 import com.odde.bbuddy.authentication.viewmodel.AutologinAuthentication;
 import com.odde.bbuddy.authentication.viewmodel.EditableAuthentication;
 import com.odde.bbuddy.common.StringResources;
@@ -34,36 +35,41 @@ public class ActivityModule {
     }
 
     @Provides @ActivityScope
-    Context provideContext() {
+    public Context provideContext() {
         return activity;
     }
 
     @Provides @ActivityScope
-    Activity provideActivity() {
+    public Activity provideActivity() {
         return activity;
     }
 
     @Provides @ActivityScope
-    ViewBinder provideViewBinder() {
+    public AddAccountView provideAddAccountView() {
+        return (AddAccountView) activity;
+    }
+
+    @Provides @ActivityScope
+    public ViewBinder provideViewBinder() {
         return new BinderFactoryBuilder().build().createViewBinder(activity);
     }
 
     @Provides @ActivityScope @Named("accounts")
-    PresentationModelChangeSupport providePresentationModelChangeSupportForAccounts(PresentableAccounts presentableAccounts) {
+    public PresentationModelChangeSupport providePresentationModelChangeSupportForAccounts(PresentableAccounts presentableAccounts) {
         return new PresentationModelChangeSupport(presentableAccounts);
     }
 
     @Provides @ActivityScope @Named("editableAuthentication")
-    PresentationModelChangeSupport providePresentationModelChangeSupportForEditableAuthentication(EditableAuthentication editableAuthentication) {
+    public PresentationModelChangeSupport providePresentationModelChangeSupportForEditableAuthentication(EditableAuthentication editableAuthentication) {
         return new PresentationModelChangeSupport(editableAuthentication);
     }
 
     @Provides @ActivityScope
-    EditableAuthentication provideEditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources, Validator validator) {
+    public EditableAuthentication provideEditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources, Validator validator, AddAccountView addAccountView) {
         if (AUTO_LOGIN)
-            return new AutologinAuthentication(authenticator, dashboardNavigation, changeSupportLoader, stringResources, validator);
+            return new AutologinAuthentication(authenticator, dashboardNavigation, changeSupportLoader, stringResources, validator, addAccountView);
         else
-            return new EditableAuthentication(authenticator, dashboardNavigation, changeSupportLoader, stringResources, validator);
+            return new EditableAuthentication(authenticator, dashboardNavigation, changeSupportLoader, stringResources, validator, addAccountView);
     }
 
 }

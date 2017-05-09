@@ -3,9 +3,11 @@ package com.odde.bbuddy.authentication.viewmodel;
 import com.nitorcreations.junit.runners.NestedRunner;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.model.Credentials;
+import com.odde.bbuddy.authentication.view.AddAccountView;
 import com.odde.bbuddy.common.Consumer;
 import com.odde.bbuddy.common.StringResources;
 import com.odde.bbuddy.common.Validator;
+import com.odde.bbuddy.common.Violation;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 
 import org.junit.Before;
@@ -23,7 +25,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +37,9 @@ public class EditableAuthenticationTest {
     PresentationModelChangeSupport mockPresentationModelChangeSupport = mock(PresentationModelChangeSupport.class);
     StringResources stubStringResources = mock(StringResources.class);
     Validator stubValidator = mock(Validator.class);
-    EditableAuthentication editableAuthentication = new EditableAuthentication(mockAuthenticator, mockDashboardNavigation, stubChangeSupportLoader, stubStringResources, stubValidator);
+    AddAccountView mockAddAccountView = mock(AddAccountView.class);
+    EditableAuthentication editableAuthentication = new EditableAuthentication(mockAuthenticator, mockDashboardNavigation, stubChangeSupportLoader, stubStringResources, stubValidator, mockAddAccountView);
+    private Violation violation = new Violation("field", "may not be blank");
 
     @Before
     public void enableChangeSupport() {
@@ -96,48 +99,29 @@ public class EditableAuthenticationTest {
     public class Validation {
 
         @Test
-        public void should_show_error_message_if_email_is_empty() {
-            givenCredentialViolatedWithMessage("email may not be blank");
+        public void should_show_error_if_email_is_empty() {
+            givenCredentialViolatedWith(violation);
 
             login("", "password");
 
-            assertThat(editableAuthentication.getMessage()).isEqualTo("email may not be blank");
-            verify(mockPresentationModelChangeSupport).refreshPresentationModel();
+            verify(mockAddAccountView).showError(violation);
         }
 
         @Test
         public void should_not_call_authenticate_if_email_is_empty() {
-            givenCredentialViolatedWithMessage("email may not be blank");
+            givenCredentialViolatedWith(violation);
 
             login("", "password");
 
             verifyAuthenticationNotCalled();
         }
 
-        @Test
-        public void should_only_refresh_once_if_there_are_two_errors() {
-            givenCredentialViolatedWithMessage("first error message", "second error message");
-
-            login("", "");
-
-            verify(mockPresentationModelChangeSupport, times(1)).refreshPresentationModel();
-        }
-
-        @Test
-        public void should_show_both_error_messages_if_email_and_password_are_both_empty() {
-            givenCredentialViolatedWithMessage("first error message", "second error message");
-
-            login("", "");
-
-            assertThat(editableAuthentication.getMessage()).contains("first error message", "second error message");
-        }
-
         private void verifyAuthenticationNotCalled() {
             verify(mockAuthenticator, never()).authenticate(any(Credentials.class), any(Runnable.class), any(Runnable.class));
         }
 
-        private void givenCredentialViolatedWithMessage(final String... messages) {
-            callConsumerArgumentAtIndexWith(1, messages).when(stubValidator).processEachViolation(any(EditableAuthentication.class), any(Consumer.class));
+        private void givenCredentialViolatedWith(final Violation... violations) {
+            callConsumerArgumentAtIndexWith(1, violations).when(stubValidator).processEachViolation(any(EditableAuthentication.class), any(Consumer.class));
         }
 
     }

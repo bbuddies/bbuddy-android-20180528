@@ -1,6 +1,7 @@
 package com.odde.bbuddy.common;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,6 +10,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Path;
 
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -18,15 +20,22 @@ public class ValidatorTest {
 
     javax.validation.Validator stubRawValidator = mock(javax.validation.Validator.class);
     Validator validator = new Validator(stubRawValidator);
+    Consumer mockConsumer = mock(Consumer.class);
 
     @Test
     public void should_consume_error_message_if_there_is_any_violation() {
-        givenRawValidatorWillReturn("email", "error message");
+        givenRawValidatorWillReturn("email", "may not be blank");
 
-        Consumer mockConsumer = mock(Consumer.class);
         validator.processEachViolation(new Object(), mockConsumer);
 
-        verify(mockConsumer).accept("email error message");
+        verifyConsumerCalledWithViolation("email", "email may not be blank");
+    }
+
+    private void verifyConsumerCalledWithViolation(String fieldName, String message) {
+        ArgumentCaptor<Violation> captor = ArgumentCaptor.forClass(Violation.class);
+        verify(mockConsumer).accept(captor.capture());
+        assertThat(captor.getValue().getFieldName()).isEqualTo(fieldName);
+        assertThat(captor.getValue().getMessage()).isEqualTo(message);
     }
 
     private void givenRawValidatorWillReturn(String fieldName, String errorMessage) {

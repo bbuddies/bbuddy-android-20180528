@@ -10,13 +10,13 @@ public class Validator {
         this.rawValidator = rawValidator;
     }
 
-    public void processEachViolation(Object object, Consumer<String> consumer) {
+    public void processEachViolation(Object object, Consumer<Violation> consumer) {
         for (ConstraintViolation violation : rawValidator.validate(object))
-            consumer.accept(errorMessage(violation));
+            consumer.accept(new Violation(fieldName(violation), fieldName(violation) + " " + violation.getMessage()));
     }
 
-    private String errorMessage(ConstraintViolation violation) {
-        return violation.getPropertyPath().iterator().next().getName() + " " + violation.getMessage();
+    private String fieldName(ConstraintViolation violation) {
+        return violation.getPropertyPath().iterator().next().getName();
     }
 
 }

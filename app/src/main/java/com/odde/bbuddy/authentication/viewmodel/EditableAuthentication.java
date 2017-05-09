@@ -3,9 +3,12 @@ package com.odde.bbuddy.authentication.viewmodel;
 import com.odde.bbuddy.R;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.model.Credentials;
+import com.odde.bbuddy.authentication.view.AddAccountView;
 import com.odde.bbuddy.common.Consumer;
 import com.odde.bbuddy.common.StringResources;
 import com.odde.bbuddy.common.Validator;
+import com.odde.bbuddy.common.ValueCaptor;
+import com.odde.bbuddy.common.Violation;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 
@@ -13,9 +16,6 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.robobinding.annotation.PresentationModel;
 import org.robobinding.presentationmodel.HasPresentationModelChangeSupport;
 import org.robobinding.presentationmodel.PresentationModelChangeSupport;
-import org.robobinding.util.Joiner;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,20 +26,24 @@ import dagger.Lazy;
 @ActivityScope
 public class EditableAuthentication implements HasPresentationModelChangeSupport {
 
+    public static final String EMAIL_FIELD_NAME = "email";
+    public static final String PASSWORD_FIELD_NAME = "password";
     private final Authenticator authenticator;
     private final DashboardNavigation dashboardNavigation;
     private final Lazy<PresentationModelChangeSupport> changeSupportLoader;
     private final StringResources stringResources;
     private final Validator validator;
+    private final AddAccountView addAccountView;
     private String message;
 
     @Inject
-    public EditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources, Validator validator) {
+    public EditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources, Validator validator, AddAccountView addAccountView) {
         this.authenticator = authenticator;
         this.dashboardNavigation = dashboardNavigation;
         this.changeSupportLoader = changeSupportLoader;
         this.stringResources = stringResources;
         this.validator = validator;
+        this.addAccountView = addAccountView;
     }
 
     @NotBlank
@@ -84,22 +88,15 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
     }
 
     private boolean isValid() {
-        final ArrayList<String> violationMessages = new ArrayList<>();
-        validator.processEachViolation(this, new Consumer<String>() {
+        final ValueCaptor<Boolean> isValid = new ValueCaptor<>(true);
+        validator.processEachViolation(this, new Consumer<Violation>() {
             @Override
-            public void accept(String violationMessage) {
-                violationMessages.add(violationMessage);
+            public void accept(Violation violation) {
+                addAccountView.showError(violation);
+                isValid.capture(false);
             }
         });
-        if (!violationMessages.isEmpty()) {
-            setMessage(allViolationMessages(violationMessages));
-            refresh();
-        }
-        return violationMessages.isEmpty();
-    }
-
-    private String allViolationMessages(ArrayList<String> violationMessages) {
-        return Joiner.on(System.getProperty("line.separator")).join(violationMessages);
+        return isValid.value();
     }
 
     private void refresh() {
