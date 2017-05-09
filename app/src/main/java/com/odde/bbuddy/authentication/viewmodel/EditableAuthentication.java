@@ -1,14 +1,11 @@
 package com.odde.bbuddy.authentication.viewmodel;
 
-import android.text.TextUtils;
-
 import com.odde.bbuddy.R;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.model.Credentials;
 import com.odde.bbuddy.common.Consumer;
 import com.odde.bbuddy.common.StringResources;
 import com.odde.bbuddy.common.Validator;
-import com.odde.bbuddy.common.ValueCaptor;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 
@@ -19,8 +16,6 @@ import org.robobinding.presentationmodel.PresentationModelChangeSupport;
 import org.robobinding.util.Joiner;
 
 import java.util.ArrayList;
-import java.util.StringJoiner;
-import java.util.StringTokenizer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -49,6 +44,7 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
 
     @NotBlank
     private String email;
+    @NotBlank
     private String password;
 
     public String getEmail() {
@@ -81,8 +77,8 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
         }, new Runnable() {
             @Override
             public void run() {
-                message = stringResources.get(R.string.login_failed);
-                getPresentationModelChangeSupport().refreshPresentationModel();
+                setMessage(stringResources.get(R.string.login_failed));
+                refresh();
             }
         });
     }
@@ -96,10 +92,18 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
             }
         });
         if (!violationMessages.isEmpty()) {
-            message = Joiner.on(System.getProperty("line.separator")).join(violationMessages);
-            getPresentationModelChangeSupport().refreshPresentationModel();
+            setMessage(allViolationMessages(violationMessages));
+            refresh();
         }
         return violationMessages.isEmpty();
+    }
+
+    private String allViolationMessages(ArrayList<String> violationMessages) {
+        return Joiner.on(System.getProperty("line.separator")).join(violationMessages);
+    }
+
+    private void refresh() {
+        getPresentationModelChangeSupport().refreshPresentationModel();
     }
 
     public String getMessage() {
