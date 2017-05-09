@@ -3,6 +3,7 @@
     <issue id="InvalidPackage">
         <ignore regexp=".*jackson-databind.*" />
         <ignore regexp=".*retrofit.*" />
+        <ignore regexp=".*hibernate-validator.*" />
     </issue>
     <issue id="MissingPrefix">
         <ignore regexp=".*bind.*" />
