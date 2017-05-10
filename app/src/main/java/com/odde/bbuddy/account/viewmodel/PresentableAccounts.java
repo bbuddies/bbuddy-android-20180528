@@ -2,7 +2,7 @@ package com.odde.bbuddy.account.viewmodel;
 
 import com.odde.bbuddy.account.api.AccountsApi;
 import com.odde.bbuddy.account.view.EditDeleteAccountNavigation;
-import com.odde.bbuddy.common.Consumer;
+import com.odde.bbuddy.common.functional.Consumer;
 import com.odde.bbuddy.di.scope.ActivityScope;
 
 import org.robobinding.annotation.ItemPresentationModel;

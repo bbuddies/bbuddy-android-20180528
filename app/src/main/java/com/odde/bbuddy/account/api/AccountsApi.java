@@ -3,7 +3,7 @@ package com.odde.bbuddy.account.api;
 import android.support.annotation.NonNull;
 
 import com.odde.bbuddy.account.viewmodel.Account;
-import com.odde.bbuddy.common.Consumer;
+import com.odde.bbuddy.common.functional.Consumer;
 
 import java.util.List;
 

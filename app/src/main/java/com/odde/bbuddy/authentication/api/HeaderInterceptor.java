@@ -3,8 +3,8 @@ package com.odde.bbuddy.authentication.api;
 import android.support.annotation.NonNull;
 
 import com.odde.bbuddy.authentication.model.AuthenticationToken;
-import com.odde.bbuddy.common.BiConsumer;
-import com.odde.bbuddy.common.Function;
+import com.odde.bbuddy.common.functional.BiConsumer;
+import com.odde.bbuddy.common.functional.Function;
 
 import java.io.IOException;
 

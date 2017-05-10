@@ -1,7 +1,7 @@
 package com.odde.bbuddy.authentication.model;
 
-import com.odde.bbuddy.common.BiConsumer;
-import com.odde.bbuddy.common.Function;
+import com.odde.bbuddy.common.functional.BiConsumer;
+import com.odde.bbuddy.common.functional.Function;
 
 import java.util.HashMap;
 import java.util.Map;

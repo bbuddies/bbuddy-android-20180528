@@ -9,7 +9,7 @@ import com.odde.bbuddy.authentication.model.AuthenticationToken;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.common.ApiFactory;
 import com.odde.bbuddy.common.StringResources;
-import com.odde.bbuddy.common.Validator;
+import com.odde.bbuddy.common.validation.Validator;
 
 import javax.inject.Singleton;
 import javax.validation.Validation;

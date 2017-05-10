@@ -1,4 +1,4 @@
-package com.odde.bbuddy.common;
+package com.odde.bbuddy.common.validation;
 
 public class Violation {
     private final String fieldName;

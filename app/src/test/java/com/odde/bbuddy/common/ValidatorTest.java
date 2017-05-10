@@ -1,5 +1,9 @@
 package com.odde.bbuddy.common;
 
+import com.odde.bbuddy.common.functional.Consumer;
+import com.odde.bbuddy.common.validation.Validator;
+import com.odde.bbuddy.common.validation.Violation;
+
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 

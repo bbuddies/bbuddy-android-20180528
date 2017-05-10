@@ -4,11 +4,11 @@ import com.odde.bbuddy.R;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.model.Credentials;
 import com.odde.bbuddy.authentication.view.AddAccountView;
-import com.odde.bbuddy.common.Consumer;
+import com.odde.bbuddy.common.functional.Consumer;
 import com.odde.bbuddy.common.StringResources;
-import com.odde.bbuddy.common.Validator;
-import com.odde.bbuddy.common.ValueCaptor;
-import com.odde.bbuddy.common.Violation;
+import com.odde.bbuddy.common.validation.Validator;
+import com.odde.bbuddy.common.functional.ValueCaptor;
+import com.odde.bbuddy.common.validation.Violation;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 

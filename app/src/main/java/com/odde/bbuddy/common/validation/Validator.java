@@ -1,4 +1,6 @@
-package com.odde.bbuddy.common;
+package com.odde.bbuddy.common.validation;
+
+import com.odde.bbuddy.common.functional.Consumer;
 
 import javax.validation.ConstraintViolation;
 

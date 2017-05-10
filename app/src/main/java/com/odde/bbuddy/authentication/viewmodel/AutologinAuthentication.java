@@ -3,7 +3,7 @@ package com.odde.bbuddy.authentication.viewmodel;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.view.AddAccountView;
 import com.odde.bbuddy.common.StringResources;
-import com.odde.bbuddy.common.Validator;
+import com.odde.bbuddy.common.validation.Validator;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 

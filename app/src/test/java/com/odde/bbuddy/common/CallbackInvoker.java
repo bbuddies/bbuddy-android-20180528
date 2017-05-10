@@ -1,5 +1,7 @@
 package com.odde.bbuddy.common;
 
+import com.odde.bbuddy.common.functional.Consumer;
+
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.Stubber;

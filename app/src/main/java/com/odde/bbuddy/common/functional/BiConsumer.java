@@ -1,4 +1,4 @@
-package com.odde.bbuddy.common;
+package com.odde.bbuddy.common.functional;
 
 public interface BiConsumer<T1, T2> {
 

@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.odde.bbuddy.R;
 import com.odde.bbuddy.authentication.viewmodel.EditableAuthentication;
-import com.odde.bbuddy.common.Violation;
+import com.odde.bbuddy.common.validation.Violation;
 
 import org.robobinding.ViewBinder;
 
