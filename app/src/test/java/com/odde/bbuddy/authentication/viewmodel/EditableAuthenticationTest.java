@@ -3,7 +3,7 @@ package com.odde.bbuddy.authentication.viewmodel;
 import com.nitorcreations.junit.runners.NestedRunner;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.model.Credentials;
-import com.odde.bbuddy.authentication.view.AddAccountView;
+import com.odde.bbuddy.authentication.view.AuthenticationView;
 import com.odde.bbuddy.common.functional.Consumer;
 import com.odde.bbuddy.common.StringResources;
 import com.odde.bbuddy.common.validation.Validator;
@@ -37,9 +37,9 @@ public class EditableAuthenticationTest {
     PresentationModelChangeSupport mockPresentationModelChangeSupport = mock(PresentationModelChangeSupport.class);
     StringResources stubStringResources = mock(StringResources.class);
     Validator stubValidator = mock(Validator.class);
-    AddAccountView mockAddAccountView = mock(AddAccountView.class);
-    EditableAuthentication editableAuthentication = new EditableAuthentication(mockAuthenticator, mockDashboardNavigation, stubChangeSupportLoader, stubStringResources, stubValidator, mockAddAccountView);
-    private Violation violation = new Violation("field", "may not be blank");
+    AuthenticationView mockAuthenticationView = mock(AuthenticationView.class);
+    EditableAuthentication editableAuthentication = new EditableAuthentication(mockAuthenticator, mockDashboardNavigation, stubChangeSupportLoader, stubStringResources, stubValidator, mockAuthenticationView);
+    Violation violation = new Violation("field", "may not be blank");
 
     @Before
     public void enableChangeSupport() {
@@ -99,16 +99,16 @@ public class EditableAuthenticationTest {
     public class Validation {
 
         @Test
-        public void should_show_error_if_email_is_empty() {
+        public void should_show_error_if_any_field_is_invalid() {
             givenCredentialViolatedWith(violation);
 
             login("", "password");
 
-            verify(mockAddAccountView).showError(violation);
+            verify(mockAuthenticationView).showError(violation);
         }
 
         @Test
-        public void should_not_call_authenticate_if_email_is_empty() {
+        public void should_not_call_authenticate_if_any_field_is_invalid() {
             givenCredentialViolatedWith(violation);
 
             login("", "password");

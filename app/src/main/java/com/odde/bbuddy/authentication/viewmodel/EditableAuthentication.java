@@ -3,7 +3,7 @@ package com.odde.bbuddy.authentication.viewmodel;
 import com.odde.bbuddy.R;
 import com.odde.bbuddy.authentication.model.Authenticator;
 import com.odde.bbuddy.authentication.model.Credentials;
-import com.odde.bbuddy.authentication.view.AddAccountView;
+import com.odde.bbuddy.authentication.view.AuthenticationView;
 import com.odde.bbuddy.common.functional.Consumer;
 import com.odde.bbuddy.common.StringResources;
 import com.odde.bbuddy.common.validation.Validator;
@@ -33,17 +33,17 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
     private final Lazy<PresentationModelChangeSupport> changeSupportLoader;
     private final StringResources stringResources;
     private final Validator validator;
-    private final AddAccountView addAccountView;
+    private final AuthenticationView authenticationView;
     private String message;
 
     @Inject
-    public EditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources, Validator validator, AddAccountView addAccountView) {
+    public EditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources, Validator validator, AuthenticationView authenticationView) {
         this.authenticator = authenticator;
         this.dashboardNavigation = dashboardNavigation;
         this.changeSupportLoader = changeSupportLoader;
         this.stringResources = stringResources;
         this.validator = validator;
-        this.addAccountView = addAccountView;
+        this.authenticationView = authenticationView;
     }
 
     @NotBlank
@@ -92,7 +92,7 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
         validator.processEachViolation(this, new Consumer<Violation>() {
             @Override
             public void accept(Violation violation) {
-                addAccountView.showError(violation);
+                authenticationView.showError(violation);
                 isValid.capture(false);
             }
         });

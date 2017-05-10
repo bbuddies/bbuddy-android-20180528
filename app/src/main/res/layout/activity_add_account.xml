@@ -13,6 +13,7 @@
     tools:context="com.odde.bbuddy.account.view.AddAccountActivity">
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/nameError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -1,7 +1,7 @@
-package com.odde.bbuddy.authentication.view;
+package com.odde.bbuddy.account.view;
 
 import com.odde.bbuddy.common.validation.Violation;
 
-public interface AddAccountView {
+public interface AccountView {
     void showError(Violation violation);
 }

@@ -19,7 +19,7 @@ import javax.inject.Inject;
 import static com.odde.bbuddy.authentication.viewmodel.EditableAuthentication.*;
 import static com.odde.bbuddy.di.component.ActivityComponentFactory.createActivityComponentBy;
 
-public class AuthenticateActivity extends AppCompatActivity implements AddAccountView {
+public class AuthenticateActivity extends AppCompatActivity implements AuthenticationView {
 
     @Inject
     EditableAuthentication editableAuthentication;

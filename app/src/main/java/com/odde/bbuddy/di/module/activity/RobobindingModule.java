@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.odde.bbuddy.account.viewmodel.PresentableAccounts;
 import com.odde.bbuddy.authentication.model.Authenticator;
-import com.odde.bbuddy.authentication.view.AddAccountView;
+import com.odde.bbuddy.authentication.view.AuthenticationView;
 import com.odde.bbuddy.authentication.viewmodel.AutologinAuthentication;
 import com.odde.bbuddy.authentication.viewmodel.EditableAuthentication;
 import com.odde.bbuddy.common.StringResources;
@@ -50,11 +50,11 @@ public class RobobindingModule {
     }
 
     @Provides @ActivityScope
-    public EditableAuthentication provideEditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources, Validator validator, AddAccountView addAccountView) {
+    public EditableAuthentication provideEditableAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources, Validator validator, AuthenticationView authenticationView) {
         if (AUTO_LOGIN)
-            return new AutologinAuthentication(authenticator, dashboardNavigation, changeSupportLoader, stringResources, validator, addAccountView);
+            return new AutologinAuthentication(authenticator, dashboardNavigation, changeSupportLoader, stringResources, validator, authenticationView);
         else
-            return new EditableAuthentication(authenticator, dashboardNavigation, changeSupportLoader, stringResources, validator, addAccountView);
+            return new EditableAuthentication(authenticator, dashboardNavigation, changeSupportLoader, stringResources, validator, authenticationView);
     }
 
 }

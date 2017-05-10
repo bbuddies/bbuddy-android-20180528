@@ -1,9 +1,15 @@
 package com.odde.bbuddy.account.viewmodel;
 
 import com.odde.bbuddy.account.api.AccountsApi;
+import com.odde.bbuddy.account.view.AccountView;
 import com.odde.bbuddy.account.view.AccountsNavigation;
+import com.odde.bbuddy.common.functional.Consumer;
+import com.odde.bbuddy.common.functional.ValueCaptor;
+import com.odde.bbuddy.common.validation.Validator;
+import com.odde.bbuddy.common.validation.Violation;
 import com.odde.bbuddy.di.scope.ActivityScope;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.robobinding.annotation.PresentationModel;
 
 import javax.inject.Inject;
@@ -14,15 +20,20 @@ public class EditableAccount {
 
     private final AccountsApi accountsApi;
     private final AccountsNavigation accountsNavigation;
+    private final Validator validator;
+    private final AccountView accountView;
 
+    @NotBlank
     private String name;
     private int balanceBroughtForward;
     private int id;
 
     @Inject
-    public EditableAccount(AccountsApi accountsApi, AccountsNavigation accountsNavigation) {
+    public EditableAccount(AccountsApi accountsApi, AccountsNavigation accountsNavigation, Validator validator, AccountView accountView) {
         this.accountsApi = accountsApi;
         this.accountsNavigation = accountsNavigation;
+        this.validator = validator;
+        this.accountView = accountView;
     }
 
     public String getName() {
@@ -46,15 +57,29 @@ public class EditableAccount {
     }
 
     public void add() {
-        Account account = new Account();
-        account.setName(name);
-        account.setBalanceBroughtForward(balanceBroughtForward);
-        accountsApi.addAccount(account, new Runnable() {
+        if (isValid())
+            addAccount();
+    }
+
+    private void addAccount() {
+        accountsApi.addAccount(new Account(name, balanceBroughtForward, 0), new Runnable() {
             @Override
             public void run() {
                 accountsNavigation.navigate();
             }
         });
+    }
+
+    private Boolean isValid() {
+        final ValueCaptor<Boolean> isValid = new ValueCaptor<>(true);
+        validator.processEachViolation(this, new Consumer<Violation>() {
+            @Override
+            public void accept(Violation violation) {
+                accountView.showError(violation);
+                isValid.capture(false);
+            }
+        });
+        return isValid.value();
     }
 
     public void setBalanceBroughtForward(int balanceBroughtForward) {

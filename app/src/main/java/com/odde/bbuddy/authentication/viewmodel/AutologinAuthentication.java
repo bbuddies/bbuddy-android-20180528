@@ -1,7 +1,7 @@
 package com.odde.bbuddy.authentication.viewmodel;
 
 import com.odde.bbuddy.authentication.model.Authenticator;
-import com.odde.bbuddy.authentication.view.AddAccountView;
+import com.odde.bbuddy.authentication.view.AuthenticationView;
 import com.odde.bbuddy.common.StringResources;
 import com.odde.bbuddy.common.validation.Validator;
 import com.odde.bbuddy.dashboard.view.DashboardNavigation;
@@ -20,8 +20,8 @@ import dagger.Lazy;
 public class AutologinAuthentication extends EditableAuthentication {
 
     @Inject
-    public AutologinAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources, Validator validator, AddAccountView addAccountView) {
-        super(authenticator, dashboardNavigation, changeSupportLoader, stringResources, validator, addAccountView);
+    public AutologinAuthentication(Authenticator authenticator, DashboardNavigation dashboardNavigation, @Named("editableAuthentication") Lazy<PresentationModelChangeSupport> changeSupportLoader, StringResources stringResources, Validator validator, AuthenticationView authenticationView) {
+        super(authenticator, dashboardNavigation, changeSupportLoader, stringResources, validator, authenticationView);
         setEmail("admin@bbuddy.com");
         setPassword("123456");
         login();

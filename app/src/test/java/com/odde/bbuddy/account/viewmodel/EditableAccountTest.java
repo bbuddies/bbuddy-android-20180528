@@ -2,19 +2,25 @@ package com.odde.bbuddy.account.viewmodel;
 
 import com.nitorcreations.junit.runners.NestedRunner;
 import com.odde.bbuddy.account.api.AccountsApi;
+import com.odde.bbuddy.account.view.AccountView;
 import com.odde.bbuddy.account.view.AccountsNavigation;
+import com.odde.bbuddy.common.functional.Consumer;
+import com.odde.bbuddy.common.validation.Validator;
+import com.odde.bbuddy.common.validation.Violation;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import static com.odde.bbuddy.account.builder.AccountBuilder.emptyAccount;
+import static com.odde.bbuddy.common.CallbackInvoker.callConsumerArgumentAtIndexWith;
 import static com.odde.bbuddy.common.CallbackInvoker.callRunnableAtIndex;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @RunWith(NestedRunner.class)
@@ -22,7 +28,10 @@ public class EditableAccountTest {
 
     AccountsApi mockAccountsApi = mock(AccountsApi.class);
     AccountsNavigation mockAccountsNavigation = mock(AccountsNavigation.class);
-    EditableAccount editableAccount = new EditableAccount(mockAccountsApi, mockAccountsNavigation);
+    AccountView mockAccountView = mock(AccountView.class);
+    Validator stubValidator = mock(Validator.class);
+    EditableAccount editableAccount = new EditableAccount(mockAccountsApi, mockAccountsNavigation, stubValidator, mockAccountView);
+    Violation violation = new Violation("field", "may not be blank");
 
     public class Add {
 
@@ -52,11 +61,6 @@ public class EditableAccountTest {
             assertThat(captor.getValue()).isEqualToComparingFieldByField(account);
         }
 
-        private void addAccount(String name, int balanceBroughtForward) {
-            editableAccount.setName(name);
-            editableAccount.setBalanceBroughtForward(balanceBroughtForward);
-            editableAccount.add();
-        }
     }
 
     public class Edit {
@@ -157,8 +161,43 @@ public class EditableAccountTest {
 
     }
 
+    public class Validation {
+
+        @Test
+        public void add_should_show_error_if_any_field_is_invalid() {
+            givenCredentialViolatedWith(violation);
+
+            addAccount("", 100);
+
+            verify(mockAccountView).showError(violation);
+        }
+
+        @Test
+        public void add_should_not_call_add_account_if_any_field_is_invalid() {
+            givenCredentialViolatedWith(violation);
+
+            addAccount("", 100);
+
+            verifyAddAccountNotCalled();
+        }
+
+        private void verifyAddAccountNotCalled() {
+            verify(mockAccountsApi, never()).addAccount(any(Account.class), any(Runnable.class));
+        }
+
+        private void givenCredentialViolatedWith(final Violation... violations) {
+            callConsumerArgumentAtIndexWith(1, violations).when(stubValidator).processEachViolation(any(EditableAccount.class), any(Consumer.class));
+        }
+
+    }
+
     private void given_account_id_is(int id) {
         editableAccount.setId(id);
     }
 
+    private void addAccount(String name, int balanceBroughtForward) {
+        editableAccount.setName(name);
+        editableAccount.setBalanceBroughtForward(balanceBroughtForward);
+        editableAccount.add();
+    }
 }
