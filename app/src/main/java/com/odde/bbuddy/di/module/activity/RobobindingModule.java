@@ -1,7 +1,6 @@
-package com.odde.bbuddy.di.module;
+package com.odde.bbuddy.di.module.activity;
 
 import android.app.Activity;
-import android.content.Context;
 
 import com.odde.bbuddy.account.viewmodel.PresentableAccounts;
 import com.odde.bbuddy.authentication.model.Authenticator;
@@ -26,30 +25,16 @@ import dagger.Provides;
 import static com.odde.bbuddy.BuildConfig.AUTO_LOGIN;
 
 @Module
-public class ActivityModule {
+public class RobobindingModule {
 
     private final Activity activity;
 
-    public ActivityModule(Activity activity) {
+    public RobobindingModule(Activity activity) {
         this.activity = activity;
     }
 
-    @Provides @ActivityScope
-    public Context provideContext() {
-        return activity;
-    }
-
-    @Provides @ActivityScope
-    public Activity provideActivity() {
-        return activity;
-    }
-
-    @Provides @ActivityScope
-    public AddAccountView provideAddAccountView() {
-        return (AddAccountView) activity;
-    }
-
-    @Provides @ActivityScope
+    @Provides
+    @ActivityScope
     public ViewBinder provideViewBinder() {
         return new BinderFactoryBuilder().build().createViewBinder(activity);
     }

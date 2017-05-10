@@ -21,7 +21,7 @@ android {
         development {
             initWith(buildTypes.debug)
             buildConfigField "String", "SERVER_URL", '"http://10.0.3.2:3000"'
-            buildConfigField "boolean", "AUTO_LOGIN", "false"
+            buildConfigField "boolean", "AUTO_LOGIN", "true"
         }
         debug {
             buildConfigField "String", "SERVER_URL", '"http://10.0.3.2:4000"'

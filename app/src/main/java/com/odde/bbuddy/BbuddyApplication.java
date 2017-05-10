@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.odde.bbuddy.di.component.ApplicationComponent;
 import com.odde.bbuddy.di.component.DaggerApplicationComponent;
-import com.odde.bbuddy.di.module.ApplicationModule;
+import com.odde.bbuddy.di.module.application.ApplicationModule;
 
 public class BbuddyApplication extends Application {
 
