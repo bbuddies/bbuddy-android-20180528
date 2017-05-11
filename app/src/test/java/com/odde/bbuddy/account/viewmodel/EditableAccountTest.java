@@ -84,12 +84,6 @@ public class EditableAccountTest {
             verify(mockAccountsNavigation).navigate();
         }
 
-        private void editAccount(String name, int balanceBroughtForward) {
-            editableAccount.setName(name);
-            editableAccount.setBalanceBroughtForward(balanceBroughtForward);
-            editableAccount.update();
-        }
-
         private void verifyAccountsEditWithAccount(Account account) {
             ArgumentCaptor<Account> captor = forClass(Account.class);
             verify(mockAccountsApi).editAccount(captor.capture(), any(Runnable.class));
@@ -159,6 +153,15 @@ public class EditableAccountTest {
             assertEquals(50, editableAccount.getBalanceBroughtForward());
         }
 
+        @Test
+        public void balance_should_be_0_if_balance_from_view_is_empty() {
+            editableAccount.setBalanceBroughtForward(50);
+
+            editableAccount.setBalanceBroughtForwardForView("");
+
+            assertEquals(0, editableAccount.getBalanceBroughtForward());
+        }
+
     }
 
     public class Validation {
@@ -178,10 +181,24 @@ public class EditableAccountTest {
 
             addAccount("", 100);
 
-            verifyAddAccountNotCalled();
+            verify(mockAccountsApi, never()).addAccount(any(Account.class), any(Runnable.class));
         }
 
-        private void verifyAddAccountNotCalled() {
+        @Test
+        public void edit_should_show_error_if_any_field_is_invalid() {
+            givenCredentialViolatedWith(violation);
+
+            editAccount("", 100);
+
+            verify(mockAccountView).showError(violation);
+        }
+
+        @Test
+        public void edit_should_not_call_add_account_if_any_field_is_invalid() {
+            givenCredentialViolatedWith(violation);
+
+            editAccount("", 100);
+
             verify(mockAccountsApi, never()).addAccount(any(Account.class), any(Runnable.class));
         }
 
@@ -200,4 +217,11 @@ public class EditableAccountTest {
         editableAccount.setBalanceBroughtForward(balanceBroughtForward);
         editableAccount.add();
     }
+
+    private void editAccount(String name, int balanceBroughtForward) {
+        editableAccount.setName(name);
+        editableAccount.setBalanceBroughtForward(balanceBroughtForward);
+        editableAccount.update();
+    }
+
 }

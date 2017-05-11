@@ -50,10 +50,13 @@ public class EditableAccount {
     }
 
     public void setBalanceBroughtForwardForView(String balanceBroughtForward) {
+        if (balanceBroughtForward.isEmpty()) {
+            this.balanceBroughtForward = 0;
+            return;
+        }
         try {
             this.balanceBroughtForward = Integer.parseInt(balanceBroughtForward);
         } catch (NumberFormatException e) {
-
         }
     }
 
@@ -96,11 +99,12 @@ public class EditableAccount {
     }
 
     public void update() {
-        Account account = new Account();
-        account.setId(id);
-        account.setName(name);
-        account.setBalanceBroughtForward(balanceBroughtForward);
-        accountsApi.editAccount(account, new Runnable() {
+        if (isValid())
+            editAccount();
+    }
+
+    private void editAccount() {
+        accountsApi.editAccount(new Account(name, balanceBroughtForward, id), new Runnable() {
             @Override
             public void run() {
                 accountsNavigation.navigate();
