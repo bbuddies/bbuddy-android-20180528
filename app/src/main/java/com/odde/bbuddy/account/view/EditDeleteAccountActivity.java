@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.odde.bbuddy.R;
 import com.odde.bbuddy.account.viewmodel.Account;
 import com.odde.bbuddy.account.viewmodel.EditableAccount;
+import com.odde.bbuddy.common.validation.Violation;
 
 import org.robobinding.ViewBinder;
 
@@ -13,7 +14,7 @@ import javax.inject.Inject;
 
 import static com.odde.bbuddy.di.component.ActivityComponentFactory.createActivityComponentBy;
 
-public class EditDeleteAccountActivity extends AppCompatActivity {
+public class EditDeleteAccountActivity extends AppCompatActivity implements AccountView {
 
     @Inject
     ViewBinder viewBinder;
@@ -36,5 +37,10 @@ public class EditDeleteAccountActivity extends AppCompatActivity {
         account.setName(accountFromIntent.getName());
         account.setBalanceBroughtForward(accountFromIntent.getBalanceBroughtForward());
         return account;
+    }
+
+    @Override
+    public void showError(Violation violation) {
+
     }
 }

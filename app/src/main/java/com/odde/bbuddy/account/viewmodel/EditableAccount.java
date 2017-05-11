@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.robobinding.annotation.PresentationModel;
 
 import javax.inject.Inject;
+import javax.validation.constraints.Size;
 
 @PresentationModel
 @ActivityScope
@@ -23,7 +24,7 @@ public class EditableAccount {
     private final Validator validator;
     private final AccountView accountView;
 
-    @NotBlank
+    @NotBlank @Size(max = 50)
     private String name;
     private int balanceBroughtForward;
     private int id;
