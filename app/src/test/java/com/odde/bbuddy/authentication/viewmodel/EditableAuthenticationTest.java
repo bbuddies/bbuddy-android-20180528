@@ -72,7 +72,7 @@ public class EditableAuthenticationTest {
             login("email", "wrong_password");
 
             assertThat(editableAuthentication.getMessage()).isEqualTo("a login failed message");
-            verify(mockPresentationModelChangeSupport).refreshPresentationModel();
+            verify(mockPresentationModelChangeSupport).firePropertyChange("message");
         }
 
         private void givenLoginFailedMessage(String message) {

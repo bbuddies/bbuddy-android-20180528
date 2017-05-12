@@ -82,7 +82,6 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
             @Override
             public void run() {
                 setMessage(stringResources.get(R.string.login_failed));
-                refresh();
             }
         });
     }
@@ -99,16 +98,13 @@ public class EditableAuthentication implements HasPresentationModelChangeSupport
         return isValid.value();
     }
 
-    private void refresh() {
-        getPresentationModelChangeSupport().refreshPresentationModel();
-    }
-
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    private void setMessage(String message) {
         this.message = message;
+        getPresentationModelChangeSupport().firePropertyChange("message");
     }
 
     @Override
