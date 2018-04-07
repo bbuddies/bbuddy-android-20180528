@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         return (BottomNavigationView) findViewById(R.id.navigation);
     }
 
-    private void setAdd(final Class<AddAccountActivity> activityClass) {
+    private void setAdd(final Class activityClass) {
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
