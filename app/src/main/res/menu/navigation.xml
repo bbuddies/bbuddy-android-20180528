@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_accounts_24dp"
         android:title="@string/account_navigation" />
 
+    <item
+        android:id="@+id/menu_budgets"
+        android:icon="@drawable/ic_accounts_24dp"
+        android:title="@string/budget_title"/>
+
 </menu>

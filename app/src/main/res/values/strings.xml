@@ -17,6 +17,7 @@
     <!-- account related strings -->
     <string name="account_navigation">Accounts</string>
     <string name="account_name">Name</string>
+    <string name="budget_title">Budgets</string>
     <string name="account_balance_brought_forward">Balance Brought Forward</string>
 
     <!-- dashboard related strings -->
