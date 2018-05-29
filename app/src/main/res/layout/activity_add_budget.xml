@@ -20,9 +20,9 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/account_name"
+            android:hint="mount"
             android:inputType="textCapWords"
-            android:id="@+id/name"
+            android:id="@+id/month"
             bind:text = "${month}"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -34,14 +34,14 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/account_balance_brought_forward"
+            android:hint="amount"
             android:inputType="number"
-            android:id="@+id/balanceBroughtForward"
+            android:id="@+id/amount"
             bind:text = "${amount}" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:text="@string/confirm"
+        android:text="Save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/confirm"

@@ -3,6 +3,7 @@ package com.odde.bbuddy.account.view;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 
 import com.odde.bbuddy.R;
@@ -36,7 +37,8 @@ public class AddBudgetActivity extends AppCompatActivity implements BudgetView{
     }
 
     @Override
-    public void showError(Violation violation) {
-        name.setError(violation.getMessage());
+    public void showError(String violation) {
+        name.setError(violation);
+        finish();
     }
 }

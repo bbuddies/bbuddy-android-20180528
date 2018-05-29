@@ -1,17 +1,30 @@
 package com.odde.bbuddy.budget.viewmodel;
 
-import com.odde.bbuddy.budget.api.BudgetsApi;
+import android.app.Activity;
 
+import com.odde.bbuddy.budget.api.BudgetsApi;
+import com.odde.bbuddy.budget.view.BudgetView;
+import com.odde.bbuddy.di.scope.ActivityScope;
+
+import org.robobinding.annotation.PresentationModel;
+
+import javax.inject.Inject;
+
+@PresentationModel
+@ActivityScope
 public class EditableBudget {
 
     private final BudgetsApi budgetsApi;
+    private final BudgetView view;
 
-    public EditableBudget(BudgetsApi budgetsApi) {
+    @Inject
+    public EditableBudget(BudgetsApi budgetsApi, BudgetView view) {
         this.budgetsApi = budgetsApi;
+        this.view = view;
     }
 
     private String month;
-    private int amount;
+    private String amount;
     private int id;
 
     public String getMonth() {
@@ -22,23 +35,23 @@ public class EditableBudget {
         this.month = month;
     }
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
     public void add() {
         Budget budget = new Budget();
         budget.setMonth(month);
-        budget.setAmount(amount);
+        budget.setAmount(Integer.parseInt(amount));
         budgetsApi.addBudget(budget, new Runnable(){
 
             @Override
             public void run() {
-                amount = 400;
+                view.showError("add budget finish!");
             }
         });
     }
