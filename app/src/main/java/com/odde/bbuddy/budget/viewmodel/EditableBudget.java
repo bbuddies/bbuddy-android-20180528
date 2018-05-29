@@ -79,64 +79,64 @@ public class EditableBudget {
         });
     }
 
-    public void getSum() {
-        DateTime startDateTime = new DateTime(startDay);
-        int startMonthOfYear = startDateTime.getMonthOfYear();
-        int startDayOfYear = startDateTime.getDayOfYear();
-
-        DateTime endDateTime = new DateTime(endDay);
-        int endMonthOfYear = endDateTime.getMonthOfYear();
-        int endDayOfYear = endDateTime.getDayOfYear();
-
-        Interval interval = new Interval(startDateTime, endDateTime.plusDays(1));
-
-        int sum = 0;
-        for (int i = 1; i <= 12; i++) {
-            for(int j = 1; j <= 28; j++) {
-                if (i == 2 && j > 28) {
-                    continue;
-                }
-                DateTime dateTime = new DateTime(2018, i, j,
-                        0, 0, 0);
-                boolean contains = interval.contains(dateTime);
-
-                if (contains) {
-                    Log.e("TAG", "i is " + i + " j is " + j);
-
-                    int monthOfYear = dateTime.getMonthOfYear();
-
-                    int average = budgetList.get(i - 1).getAmount() / 28;
-
-                    sum += average;
-                }
-            }
-        }
-
-        Log.e("TAG", "sum is " + sum);
-
-        int startMonth = LocalDate.parse(startDay).getMonthOfYear();
-        int endMonth = LocalDate.parse(endDay).getMonthOfYear();
-
-        Period p = new Period(startDateTime, endDateTime, PeriodType.days());
-        int days = p.getDays(); // 天数
-        //int days1 = Days.daysBetween(startDateTime, endDateTime).getDays();// 相差天数
-
-        boolean contained = interval.contains(new DateTime("2014-08-03"));// 验证某一天是否在该区间内
-
-        DateTime dateTime = new DateTime();
-        int dayOfYear = dateTime.getDayOfYear();
-        for (int i = 1; i <= dayOfYear; i++) {
-//            boolean contains = interval.contains(new DateTime(budget.getMonth()));
-//            if (contains) {
-//                int month = LocalDate.parse(new DateTime(budget.getMonth()).toString()).getMonthOfYear();
-//                sum += budget.getAmount() / month;
+//    public void getSum() {
+//        DateTime startDateTime = new DateTime(startDay);
+//        int startMonthOfYear = startDateTime.getMonthOfYear();
+//        int startDayOfYear = startDateTime.getDayOfYear();
+//
+//        DateTime endDateTime = new DateTime(endDay);
+//        int endMonthOfYear = endDateTime.getMonthOfYear();
+//        int endDayOfYear = endDateTime.getDayOfYear();
+//
+//        Interval interval = new Interval(startDateTime, endDateTime.plusDays(1));
+//
+//        int sum = 0;
+//        for (int i = 1; i <= 12; i++) {
+//            for(int j = 1; j <= 28; j++) {
+//                if (i == 2 && j > 28) {
+//                    continue;
+//                }
+//                DateTime dateTime = new DateTime(2018, i, j,
+//                        0, 0, 0);
+//                boolean contains = interval.contains(dateTime);
+//
+//                if (contains) {
+//                    Log.e("TAG", "i is " + i + " j is " + j);
+//
+//                    int monthOfYear = dateTime.getMonthOfYear();
+//
+//                    int average = budgetList.get(i - 1).getAmount() / 28;
+//
+//                    sum += average;
+//                }
 //            }
-        }
-
-        view.showError(sum + "");
-
-        return;
-    }
+//        }
+//
+//        Log.e("TAG", "sum is " + sum);
+//
+//        int startMonth = LocalDate.parse(startDay).getMonthOfYear();
+//        int endMonth = LocalDate.parse(endDay).getMonthOfYear();
+//
+//        Period p = new Period(startDateTime, endDateTime, PeriodType.days());
+//        int days = p.getDays(); // 天数
+//        //int days1 = Days.daysBetween(startDateTime, endDateTime).getDays();// 相差天数
+//
+//        boolean contained = interval.contains(new DateTime("2014-08-03"));// 验证某一天是否在该区间内
+//
+//        DateTime dateTime = new DateTime();
+//        int dayOfYear = dateTime.getDayOfYear();
+//        for (int i = 1; i <= dayOfYear; i++) {
+////            boolean contains = interval.contains(new DateTime(budget.getMonth()));
+////            if (contains) {
+////                int month = LocalDate.parse(new DateTime(budget.getMonth()).toString()).getMonthOfYear();
+////                sum += budget.getAmount() / month;
+////            }
+//        }
+//
+//        view.showError(sum + "");
+//
+//        return;
+//    }
 
     public double getSum(int startDay, int endDay) {
         DateTime startDateTime = new DateTime(startDay);
