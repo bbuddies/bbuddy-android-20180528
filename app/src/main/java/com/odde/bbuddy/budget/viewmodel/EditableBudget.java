@@ -23,8 +23,8 @@ import javax.inject.Inject;
 @ActivityScope
 public class EditableBudget {
 
-    private final BudgetsApi budgetsApi;
-    private final BudgetView view;
+    private BudgetsApi budgetsApi;
+    private BudgetView view;
 
     @Inject
     public EditableBudget(BudgetsApi budgetsApi, BudgetView view) {
@@ -37,6 +37,10 @@ public class EditableBudget {
             budget.setAmount(i * 100);
             budgetList.add(budget);
         }
+    }
+
+    public EditableBudget(List<Budget> budgets) {
+        budgetList = budgets;
     }
 
     private String month;
@@ -135,6 +139,9 @@ public class EditableBudget {
     }
 
     public double getSum(int startDay, int endDay) {
+        DateTime startDateTime = new DateTime(startDay);
+
+        DateTime endDateTime = new DateTime(endDay);
         return 0;
     }
 

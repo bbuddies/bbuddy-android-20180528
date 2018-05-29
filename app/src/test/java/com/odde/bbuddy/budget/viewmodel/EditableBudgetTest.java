@@ -7,6 +7,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -14,6 +17,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class EditableBudgetTest {
+
+    private List<Budget> budgets;
 
     @Test
     public void addBudget() {
@@ -46,7 +51,23 @@ public class EditableBudgetTest {
 
     @Test
     public void get_whole_month() {
+        givenBudgets();
 
+        calculateBudget("2018-3-1", "2018-3-31");
+
+
+    }
+
+    private void calculateBudget(String startDay, String endDay) {
+
+    }
+
+    private void givenBudgets() {
+        budgets = new ArrayList<>();
+        budgets.add(new Budget(){{
+            setMonth("2018-3");
+            setAmount(1000);
+        }});
     }
 
     @Test
