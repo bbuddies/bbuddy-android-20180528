@@ -1,5 +1,6 @@
 package com.odde.bbuddy.di.component;
 
+import com.odde.bbuddy.account.view.AddBudgetActivity;
 import com.odde.bbuddy.authentication.view.AuthenticateActivity;
 import com.odde.bbuddy.account.view.AccountsActivity;
 import com.odde.bbuddy.account.view.AddAccountActivity;
@@ -17,4 +18,5 @@ public interface ActivityComponent {
     void inject(AccountsActivity accountsActivity);
     void inject(EditDeleteAccountActivity editDeleteAccountActivity);
     void inject(AuthenticateActivity authenticateActivity);
+    void inject(AddBudgetActivity addBudgetActivity);
 }
