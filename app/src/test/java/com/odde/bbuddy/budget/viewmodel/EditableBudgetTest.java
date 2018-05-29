@@ -44,4 +44,18 @@ public class EditableBudgetTest {
         }).when(mockApi).addBudget(any(Budget.class), any(Runnable.class));
     }
 
+    @Test
+    public void get_whole_month() {
+
+    }
+
+    @Test
+    public void get_not_period_month() {
+
+    }
+
+    @Test
+    public void get_budget_exception() {
+
+    }
 }

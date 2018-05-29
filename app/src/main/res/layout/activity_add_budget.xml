@@ -47,4 +47,38 @@
         android:id="@+id/confirm"
         bind:onClick = "add" />
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="start mount"
+            android:inputType="textCapWords"
+            android:id="@+id/start_month"
+            bind:text = "${startDay}"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="end month"
+            android:inputType="textCapWords"
+            android:id="@+id/endMonth"
+            bind:text = "${endDay}" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:text="getSum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/getSum"
+        bind:onClick = "getSum" />
+
 </LinearLayout>

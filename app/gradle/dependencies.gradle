@@ -9,6 +9,7 @@ dependencies {
             [group: 'org.hibernate', name: 'hibernate-validator', version: libVersions.hibernateValidator],
             [group: 'javax.el', name: 'javax.el-api', version: libVersions.javaxEl],
             [group: 'org.glassfish.web', name: 'javax.el', version: libVersions.javaxEl],
+            [group: 'joda-time', name: 'joda-time', version: '2.9.9']
     )
     compile(group: 'org.robobinding', name: 'robobinding', version: libVersions.robobinding, classifier: 'with-dependencies') {
         exclude group: 'com.google.guava', module: 'guava'

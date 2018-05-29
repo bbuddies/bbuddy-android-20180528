@@ -39,6 +39,6 @@ public class AddBudgetActivity extends AppCompatActivity implements BudgetView{
     @Override
     public void showError(String violation) {
         name.setError(violation);
-        finish();
+        //finish();
     }
 }
