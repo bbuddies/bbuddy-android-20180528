@@ -53,13 +53,13 @@ public class EditableBudgetTest {
     public void get_whole_month() {
         givenBudgets();
 
-        calculateBudget("2018-3-1", "2018-3-31");
+        int calculateBudget = calculateBudget("2018-3-1", "2018-3-31");
 
-
+        assertThat(calculateBudget).isEqualTo(1000);
     }
 
-    private void calculateBudget(String startDay, String endDay) {
-
+    private int calculateBudget(String startDay, String endDay) {
+        return 0;
     }
 
     private void givenBudgets() {
