@@ -79,11 +79,68 @@ public class EditableBudget {
         });
     }
 
-    public double getSum(int startDay, int endDay) {
-        DateTime startDateTime = new DateTime(startDay);
 
-        DateTime endDateTime = new DateTime(endDay);
-        return 0;
+    public int getSum(LocalDate start, LocalDate end) {
+        if (end.isBefore(start)) {
+            return 0;
+        }
+
+        String startString = start.getYear() + "-" + start.getMonthOfYear();
+        String endString = end.getYear() + "-" + end.getMonthOfYear();
+
+        List<Budget> budgets = new ArrayList<>();
+
+        for (Budget budget : budgetList) {
+            String month = budget.getMonth();
+            String[] yearAndMonth = month.split("-");
+            if(yearAndMonth.length != 2) {
+                break;
+            }
+            int y = Integer.parseInt(yearAndMonth[0]);
+            int m = Integer.parseInt(yearAndMonth[1]);
+            if (!isBefore(y, m, start.getYear(), start.getMonthOfYear())
+                    && !isBefore(end.getYear(), end.getMonthOfYear(), y, m)) {
+                budgets.add(budget);
+            }
+        }
+
+        int sum = 0;
+        for (Budget budget : budgets) {
+            int amount = budget.getAmount();
+            sum += amount;
+            if (budget.getMonth().equals(startString)) {
+                sum -= beforeAmount(start, amount);
+            }
+            if (budget.getMonth().equals(endString)) {
+                sum -= lastAmount(end, amount);
+            }
+        }
+
+        return sum;
+    }
+
+    private boolean isBefore(int y1, int m1, int y2, int m2) {
+        if (y1 < y2) {
+            return true;
+        }
+
+        if (m1 < m2) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private int beforeAmount(LocalDate start, int amount) {
+        int between = start.getDayOfMonth() - 1;
+        int daysOfMonth = start.getDayOfMonth();
+        return between * amount / daysOfMonth;
+    }
+
+    private int lastAmount(LocalDate end, int amount) {
+        int daysOfMonth = end.getDayOfMonth();
+        int between = daysOfMonth - end.getDayOfMonth();
+        return between * amount / daysOfMonth;
     }
 
     public void setId(int id) {
