@@ -79,17 +79,38 @@ public class EditableBudget {
         });
     }
 
-
-    public int getSum(LocalDate start, LocalDate end) {
+    public int getSumBetweenMonth(LocalDate start, LocalDate end) {
         if (end.isBefore(start)) {
             return 0;
         }
 
-        String startString = start.getYear() + "-" + start.getMonthOfYear();
-        String endString = end.getYear() + "-" + end.getMonthOfYear();
+        List<Budget> budgets = validateBudgetsFromServer(start, end);
 
+        return getSumByMonthOfYear(budgets, start, end);
+    }
+
+    private int getSumByMonthOfYear(List<Budget> allValidateBudgets, LocalDate start, LocalDate end) {
+        int sum = 0;
+
+        String startMonthOfYear = start.getYear() + "-" + start.getMonthOfYear();
+        String endMonthOfYear = end.getYear() + "-" + end.getMonthOfYear();
+
+        for (Budget budget : allValidateBudgets) {
+            int amount = budget.getAmount();
+            sum += amount;
+            if (budget.getMonth().equals(startMonthOfYear)) {
+                sum -= beforeAmount(start, amount);
+            }
+            if (budget.getMonth().equals(endMonthOfYear)) {
+                sum -= lastAmount(end, amount);
+            }
+        }
+
+        return sum;
+    }
+
+    private List<Budget> validateBudgetsFromServer(LocalDate start, LocalDate end) {
         List<Budget> budgets = new ArrayList<>();
-
         for (Budget budget : budgetList) {
             String month = budget.getMonth();
             String[] yearAndMonth = month.split("-");
@@ -103,20 +124,7 @@ public class EditableBudget {
                 budgets.add(budget);
             }
         }
-
-        int sum = 0;
-        for (Budget budget : budgets) {
-            int amount = budget.getAmount();
-            sum += amount;
-            if (budget.getMonth().equals(startString)) {
-                sum -= beforeAmount(start, amount);
-            }
-            if (budget.getMonth().equals(endString)) {
-                sum -= lastAmount(end, amount);
-            }
-        }
-
-        return sum;
+        return budgets;
     }
 
     private boolean isBefore(int y1, int m1, int y2, int m2) {

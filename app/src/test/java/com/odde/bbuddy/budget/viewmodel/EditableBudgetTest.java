@@ -1,7 +1,9 @@
 package com.odde.bbuddy.budget.viewmodel;
 
 import com.odde.bbuddy.budget.api.BudgetsApi;
+import com.odde.bbuddy.budget.view.BudgetView;
 
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
@@ -23,11 +25,12 @@ public class EditableBudgetTest {
     @Test
     public void addBudget() {
         BudgetsApi mockApi = mock(BudgetsApi.class);
-        EditableBudget editableBudget = new EditableBudget(mockApi);
+        BudgetView budgetView = mock(BudgetView.class);
+        EditableBudget editableBudget = new EditableBudget(mockApi, budgetView);
         givenAddBudgetSuccess(mockApi);
 
         editableBudget.setMonth("2018-06");
-        editableBudget.setAmount(500);
+        editableBudget.setAmount(500 + "");
         editableBudget.add();
 
         ArgumentCaptor<Budget> captor = ArgumentCaptor.forClass(Budget.class);
@@ -53,13 +56,15 @@ public class EditableBudgetTest {
     public void get_whole_month() {
         givenBudgets();
 
-        int calculateBudget = calculateBudget("2018-3-1", "2018-3-31");
-
-        assertThat(calculateBudget).isEqualTo(1000);
+        validateBudgetsBetweenMonth(LocalDate.parse("2018-3-1"), LocalDate.parse("2018-3-31"));
     }
 
-    private int calculateBudget(String startDay, String endDay) {
-        return 0;
+    private void validateBudgetsBetweenMonth(LocalDate startDay, LocalDate endDay) {
+        EditableBudget editableBudget = new EditableBudget(budgets);
+
+        int sumBetweenMonth = editableBudget.getSumBetweenMonth(startDay, endDay);
+
+        assertThat(sumBetweenMonth).isEqualTo(1000);
     }
 
     private void givenBudgets() {
